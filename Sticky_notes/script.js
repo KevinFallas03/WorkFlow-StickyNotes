@@ -1,15 +1,53 @@
-//Make the DIV element draggagle:
-function createNote(color){
-    var cont = document.createElement("TEXTAREA");
-    cont.id = "mydivheader";
-    cont.style.background = color;
-    cont.ondblclick = function() {dragElement(cont)};
-
-    document.body.appendChild(cont);
-    dragElement(cont);
+function show_menu(elmnt,buttonCont){
+    buttonCont.style.display = 'block';
+    // dragElement(elmnt, buttonCont);
 }
 
-function dragElement(elmnt) {
+function change_color(elmnt1,elmnt2,color){
+    elmnt1.style.background = color;
+    elmnt2.style.background = color;
+}
+
+//Make the DIV element draggagle:
+function createNote(color){
+    // Create the container og buttons of the note
+    var buttonCont = document.createElement("DIV");
+    var cont = document.createElement("DIV");
+    var ta = document.createElement("TEXTAREA");
+
+    buttonCont.id = "color_button_container";
+    buttonCont.style.display = 'none';
+
+    const colors = ["#ace9dd", "#fbeba5", "#b5efce", "#fdddaa"];
+    colors.forEach((color)=>{
+        var colorBtn = document.createElement("BUTTON");
+        colorBtn.style.background = color;
+        colorBtn.id = "little_color_btn";
+        colorBtn.onclick = function() {change_color(cont,ta, color)};
+        buttonCont.appendChild(colorBtn);
+    });
+
+    var moveBtn = document.createElement("BUTTON");
+    moveBtn.id = "move_btn";
+    moveBtn.onclick = function() {dragElement(cont, buttonCont)};
+    buttonCont.appendChild(moveBtn);
+
+    var cont = document.createElement("DIV");
+    cont.id = "mydivheader";
+    cont.style.background = color;
+    cont.ondblclick = function() {show_menu(cont, buttonCont)};
+
+    var ta = document.createElement("TEXTAREA");
+    ta.style.background = color;
+
+    cont.appendChild(ta);
+    cont.appendChild(buttonCont);
+
+    document.body.appendChild(cont);
+    dragElement(cont,buttonCont);
+}
+
+function dragElement(elmnt, buttonCont) {
   elmnt.style.cursor = "move";
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
   elmnt.onmousedown = dragMouseDown;
@@ -58,6 +96,7 @@ function dragElement(elmnt) {
         last_selected.appendChild(elmnt);
         last_selected.style.background = "white";
     }
+    buttonCont.style.display = 'none';
     elmnt.style.cursor = "text";
     elmnt.onmousedown = null;
     document.onmouseup = null;
