@@ -15,14 +15,15 @@ function dragElement(elmnt) {
   elmnt.onmousedown = dragMouseDown;
   var table = document.getElementById('workflow');
 
-  var last_selected;
+  var last_selected = null;
   function dragMouseDown(e) {
     e = e || window.event;
     e.preventDefault();
-    document.onmouseup = closeDragElement;
+    
     // get the mouse cursor position at startup:
     pos3 = e.clientX;
     pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
     // call a function whenever the cursor moves:
     document.onmousemove = elementDrag;
   }
@@ -53,8 +54,10 @@ function dragElement(elmnt) {
   }
 
   function closeDragElement() {
-    last_selected.appendChild(elmnt);
-    last_selected.style.background = "white";
+    if(last_selected !== null){
+        last_selected.appendChild(elmnt);
+        last_selected.style.background = "white";
+    }
     elmnt.style.cursor = "text";
     elmnt.onmousedown = null;
     document.onmouseup = null;
