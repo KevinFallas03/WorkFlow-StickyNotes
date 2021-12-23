@@ -1,6 +1,5 @@
 function show_menu(elmnt,toolsContainer){
-    toolsContainer.style.display = 'block';
-    // dragElement(elmnt, toolsContainer);
+  toolsContainer.style.display = 'block';
 }
 
 //Make the DIV element draggagle:
@@ -26,6 +25,7 @@ function createNote(){
   var changeColorInput = document.createElement("INPUT");
   changeColorInput.setAttribute("type", "color");
   changeColorInput.id = "little_sticky_note_color";
+  changeColorInput.value = color;
   changeColorInput.addEventListener("change",(e)=>{
     note.style.background = e.target.value;
     noteTextarea.style.background = e.target.value;
@@ -36,8 +36,14 @@ function createNote(){
   //Create the move button
   var moveBtn = document.createElement("BUTTON");
   moveBtn.id = "move_btn";
-  moveBtn.onclick = function() {dragElement(note, toolsContainer)};
+  moveBtn.onmouseover = function() {dragElement(note, toolsContainer)};
   toolsContainer.appendChild(moveBtn);
+
+  //Create the move button
+  var removeBtn = document.createElement("BUTTON");
+  removeBtn.id = "remove_btn";
+  removeBtn.onclick = function() {note.remove()};
+  toolsContainer.appendChild(removeBtn);
 
   note.ondblclick = function() {toolsContainer.style.display = 'block';};
   note.appendChild(noteTextarea);
