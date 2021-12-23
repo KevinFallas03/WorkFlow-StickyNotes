@@ -1,0 +1,6 @@
+-+ https://www.apachelounge.com/download/ 
+    - Apache 2.4.52 Win64
+        - descargar [Apache VS16 Binary] httpd-2.4.52-win64-VS16.zip    
+
+-+ https://windows.php.net/download#php-8.0
+    - 
