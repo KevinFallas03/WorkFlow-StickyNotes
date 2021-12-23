@@ -1,53 +1,53 @@
-function show_menu(elmnt,buttonCont){
-    buttonCont.style.display = 'block';
-    // dragElement(elmnt, buttonCont);
-}
-
-function change_color(elmnt1,elmnt2,color){
-    elmnt1.style.background = color;
-    elmnt2.style.background = color;
+function show_menu(elmnt,toolsContainer){
+    toolsContainer.style.display = 'block';
+    // dragElement(elmnt, toolsContainer);
 }
 
 //Make the DIV element draggagle:
-function createNote(color){
-    // Create the container og buttons of the note
-    var buttonCont = document.createElement("DIV");
-    var cont = document.createElement("DIV");
-    var ta = document.createElement("TEXTAREA");
+function createNote(){
+  // Get the value from the color input
+  var color = document.getElementById("sticky_note_color").value;
+  
+  // Create the main container
+  var note = document.createElement("DIV");
+  note.id = "mydivheader";
+  note.style.background = color;
 
-    buttonCont.id = "color_button_container";
-    buttonCont.style.display = 'none';
+  // Create the container for the note tool (move, change color)
+  var toolsContainer = document.createElement("DIV");
+  toolsContainer.id = "color_button_container";
+  toolsContainer.style.display = 'none';
 
-    const colors = ["#ace9dd", "#fbeba5", "#b5efce", "#fdddaa"];
-    colors.forEach((color)=>{
-        var colorBtn = document.createElement("BUTTON");
-        colorBtn.style.background = color;
-        colorBtn.id = "little_color_btn";
-        colorBtn.onclick = function() {change_color(cont,ta, color)};
-        buttonCont.appendChild(colorBtn);
-    });
+  // Create the textarea
+  var noteTextarea = document.createElement("TEXTAREA");
+  noteTextarea.style.background = color;
+  
+  // Create the change color input
+  var changeColorInput = document.createElement("INPUT");
+  changeColorInput.setAttribute("type", "color");
+  changeColorInput.id = "little_sticky_note_color";
+  changeColorInput.addEventListener("change",(e)=>{
+    note.style.background = e.target.value;
+    noteTextarea.style.background = e.target.value;
+    toolsContainer.style.display = 'none';
+  }, false);
+  toolsContainer.appendChild(changeColorInput);
 
-    var moveBtn = document.createElement("BUTTON");
-    moveBtn.id = "move_btn";
-    moveBtn.onclick = function() {dragElement(cont, buttonCont)};
-    buttonCont.appendChild(moveBtn);
+  //Create the move button
+  var moveBtn = document.createElement("BUTTON");
+  moveBtn.id = "move_btn";
+  moveBtn.onclick = function() {dragElement(note, toolsContainer)};
+  toolsContainer.appendChild(moveBtn);
 
-    var cont = document.createElement("DIV");
-    cont.id = "mydivheader";
-    cont.style.background = color;
-    cont.ondblclick = function() {show_menu(cont, buttonCont)};
+  note.ondblclick = function() {toolsContainer.style.display = 'block';};
+  note.appendChild(noteTextarea);
+  note.appendChild(toolsContainer);
 
-    var ta = document.createElement("TEXTAREA");
-    ta.style.background = color;
-
-    cont.appendChild(ta);
-    cont.appendChild(buttonCont);
-
-    document.body.appendChild(cont);
-    dragElement(cont,buttonCont);
+  document.body.appendChild(note);
+  dragElement(note,toolsContainer);
 }
 
-function dragElement(elmnt, buttonCont) {
+function dragElement(elmnt, toolsContainer) {
   elmnt.style.cursor = "move";
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
   elmnt.onmousedown = dragMouseDown;
@@ -96,7 +96,7 @@ function dragElement(elmnt, buttonCont) {
         last_selected.appendChild(elmnt);
         last_selected.style.background = "white";
     }
-    buttonCont.style.display = 'none';
+    toolsContainer.style.display = 'none';
     elmnt.style.cursor = "text";
     elmnt.onmousedown = null;
     document.onmouseup = null;
