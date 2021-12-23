@@ -1,11 +1,8 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 20-11-2021 a las 21:40:26
--- Versión del servidor: 10.3.16-MariaDB
--- Versión de PHP: 8.
+-- Versión de PHP: 8.0
 
 -- ****************************** --
 --            TABLES              --
