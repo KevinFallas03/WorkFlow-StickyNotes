@@ -1,0 +1,55 @@
+td{
+    position: relative;
+    border: 3px solid black;
+    width: 120px;
+    height: 500px;
+}
+
+#move_btn{
+    background: url("images/move.png");
+    background-size: 15px 15px;
+    height: 15px;
+    width: 15px;
+    border: none;
+    margin-left: 5px;
+}
+
+#sticky_notes_btns{
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+#color_button_container{
+    height: 20px;
+    background-color: lightgrey;
+}
+
+#mydivheader {
+    position: fixed;
+    top: 10px;
+    cursor: move;
+    z-index: 10;
+    box-shadow: 2px 7px gray;
+    display: inline-block;
+}
+
+#little_color_btn{
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    margin: 3px;
+    border: 2px;
+}
+
+textarea{
+    height: 70px;
+    width: 70px;
+    display: inline-block;
+    border: none;
+    outline: none;
+}
