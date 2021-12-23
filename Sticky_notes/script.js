@@ -1,10 +1,10 @@
 //Make the DIV element draggagle:
-function ola(color){
+function createNote(color){
     var cont = document.createElement("TEXTAREA");
     cont.id = "mydivheader";
     cont.style.background = color;
     cont.ondblclick = function() {dragElement(cont)};
-    
+
     document.body.appendChild(cont);
     dragElement(cont);
 }

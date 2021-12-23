@@ -16,6 +16,12 @@ td{
     top: 0%;
 }
 
+#sticky_notes_btns{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
 table{
     border-collapse: collapse;
 }
@@ -30,5 +36,8 @@ table{
     cursor: move;
     z-index: 10;
     box-shadow: 2px 7px gray;
-    display: inline-block;
+}
+
+textarea:hover{
+    background-color: black;
 }
