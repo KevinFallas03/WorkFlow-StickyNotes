@@ -63,7 +63,7 @@ function dragElement(elmnt, toolsContainer) {
   function dragMouseDown(e) {
     e = e || window.event;
     e.preventDefault();
-    
+    elmnt.style.transform = 'rotate('+0+'deg)'; 
     // get the mouse cursor position at startup:
     pos3 = e.clientX;
     pos4 = e.clientY;
@@ -105,6 +105,7 @@ function dragElement(elmnt, toolsContainer) {
     toolsContainer.style.display = 'none';
     elmnt.style.cursor = "text";
     elmnt.onmousedown = null;
+    elmnt.style.transform = 'rotate('+6+'deg)'; 
     document.onmouseup = null;
     document.onmousemove = null;
   }

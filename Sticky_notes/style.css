@@ -52,6 +52,8 @@ table{
     z-index: 10;
     box-shadow: 2px 7px gray;
     display: inline-block;
+    transform : rotate(6deg); 
+    transition: ease-in-out;
 }
 
 #little_color_btn{
