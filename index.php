@@ -19,4 +19,7 @@ $mysqli->set_charset('utf8mb4');
 echo "<h1>WorkFlow</h1>";
 echo "Database Connected Successfully";
 
+mysqli_close($mysqli)
+
+
 ?>
