@@ -1,42 +1,36 @@
--- phpMyAdmin SQL Dump
--- https://www.phpmyadmin.net/
---
--- Servidor: localhost
--- Versión de PHP: 8.0
+-- USE inclusive_whiteboard;
 
 -- ****************************** --
 --            TABLES              --
 -- ****************************** --
 
--- INCOMPLETO NO USAR AUN 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id_user` int(11) NOT NULL PRIMARY KEY,
-  `user` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE SCHEMA IF NOT EXISTS `inclusive_whiteboard1` ;
 
-CREATE TABLE IF NOT EXISTS `workflows` (
-  `id_workflow` int(11) NOT NULL PRIMARY KEY,
-  `id_user` int(11) NOT NULL KEY,
-  `workflow_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `workflow_description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `workflow_colour` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS inclusive_whiteboard.users (
+  id_user INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	user VARCHAR(50) NOT NULL,
+	password VARCHAR(200) NOT NULL
+)AUTO_INCREMENT=1;
 
-CREATE TABLE IF NOT EXISTS `sticky_notes` (
-  `id_sticky_note` int(11) NOT NULL PRIMARY KEY,
-  `id_user` int(11) DEFAULT NULL KEY,
-  `id_workflow` int(11) DEFAULT NULL KEY,
-  `status` int(1) NOT NULL,
-  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `colour` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `deadline` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS inclusive_whiteboard.workflows (
+	id_workflow INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id_user INT(11) NOT NULL,
+	workflow_name VARCHAR(30) NOT NULL,
+	workflow_description VARCHAR(255) NOT NULL,
+	creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT FOREIGN KEY fk_workflows_users (id_user) REFERENCES users (id_user)
+)AUTO_INCREMENT=1;
 
-
+CREATE TABLE IF NOT EXISTS inclusive_whiteboard.sticky_notes (
+	id_sticky_note INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id_user INT(11) DEFAULT NULL,
+	id_workflow INT(11) DEFAULT NULL,
+	status INT(1) NOT NULL,
+	description VARCHAR(255) DEFAULT NULL,
+	color VARCHAR(7) DEFAULT NULL,
+	CONSTRAINT FOREIGN KEY fk_stickynotes_users (id_user) REFERENCES users (id_user),
+	CONSTRAINT FOREIGN KEY fk_stickynotes_workflow (id_workflow) REFERENCES workflows (id_workflow)
+)AUTO_INCREMENT=1;
 
 
 
