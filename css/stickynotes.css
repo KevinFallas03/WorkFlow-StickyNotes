@@ -1,0 +1,80 @@
+@import url('main.css');
+
+.board {
+    margin-left: 200px;
+    margin-top: 20px;
+}
+
+td{
+    position: relative;
+    border: 3px solid black;
+    width: 120px;
+    height: 500px;
+}
+
+#move_btn{
+    background: url("../assests/images/move.png");
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px;
+    border: none;
+    margin: 2px;
+}
+
+#remove_btn{
+    background: url("../assests/images/remove.png");
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px;
+    border: none;
+    margin-left: 2px;
+}
+
+#little_sticky_note_color{
+    width: 25px;
+}
+
+#sticky_notes_btns{
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+#color_button_container{
+    background-color: lightgrey;
+    display: block;
+    overflow: auto;
+    padding: 1px;
+    text-align: center;
+}
+
+#mydivheader {
+    position: fixed;
+    top: 10px;
+    cursor: move;
+    z-index: 10;
+    box-shadow: 2px 7px gray;
+    display: inline-block;
+    transform : rotate(6deg); 
+    transition: ease-in-out;
+}
+
+#little_color_btn{
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    margin: 3px;
+    border: 2px;
+}
+
+textarea{
+    height: 70px;
+    width: 70px;
+    display: inline-block;
+    border: none;
+    outline: none;
+}
