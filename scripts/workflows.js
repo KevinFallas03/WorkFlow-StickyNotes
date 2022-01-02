@@ -28,24 +28,71 @@ function workflows_request()
     xhttp.send();  
 }
 
+window.onload = () =>{
+    get_workflows();
+}
+
 function get_workflows()
 {
     workflows_request();
-    document.getElementById("workflows_id").innerHTML="";
-    console.log(data);
+    // console.log(data);
     data.forEach(
         element => 
         {
-            console.log(element);
+            // console.log(element);
             workflow = document.createElement("div");
-            // workflow.className = workflow_item;
-            workflow.setAttribute("id", "workflow"+element.id);
-            document.getElementById("workflows_id").appendChild(workflow);
-            workflow_element = document.createElement("button");
-            workflow.className = "workflow-item"
-            workflow_element.onclick = `open_workflow(event, ${element.name})`;
-            workflow_element.innerHTML= element.name;
-            workflow.appendChild(workflow_element);
+            workflow.className = "workflow-item";
+            workflow.setAttribute("id", "workflow" + element.id);
+
+            delete_button = document.createElement("div");
+            delete_button.setAttribute("id", "delete_button" + element.id); 
+            delete_button.className = "crud-btn";
+            delete_icon = document.createElement("i");
+            delete_icon.className = "fa fa-trash"; 
+            delete_button.appendChild(delete_icon);
+            
+            edit_button = document.createElement("div");
+            edit_button.setAttribute("id", "edit_button" + element.id); 
+            edit_button.className = "crud-btn";
+            edit_icon = document.createElement("i");
+            edit_icon.className = "fa fa-pencil"; 
+            edit_button.appendChild(edit_icon);
+            
+            info_button = document.createElement("div");
+            info_button.setAttribute("id", "info_button" + element.id); 
+            info_button.className = "crud-btn";
+            info_icon = document.createElement("i");
+            info_icon.className = "fa fa-info-circle";
+            info_button.appendChild(info_icon);
+
+            workflow_clickable = document.createElement("div");
+            workflow_clickable.setAttribute("id", "wf_clickable" + element.id); 
+            workflow_clickable.className = "wf-clickable";
+            workflow_clickable.innerHTML = element.name;
+
+            delete_button.onclick = () => {
+                alert("Deleting workflow " + element.name);
+            };
+
+            edit_button.onclick = () => {
+                alert("Editing workflow " + element.name);
+            };
+
+            info_button.onclick = () => {
+                alert("Workflow name: "+ element.name +"\nDescription: " + element.description + "\nCreation date: " + element.creation_date);
+            };
+
+            workflow_clickable.onclick = () => {
+                alert("Switching to workflow " + element.name);
+            }
+            
+            
+            workflow.appendChild(workflow_clickable);
+            workflow.appendChild(delete_button);
+            workflow.appendChild(edit_button);
+            workflow.appendChild(info_button);
+
+            document.getElementById("workflow-list-id").appendChild(workflow);
         }
         
     )
