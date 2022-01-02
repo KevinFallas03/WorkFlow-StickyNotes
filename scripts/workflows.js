@@ -35,7 +35,6 @@ window.onload = () =>{
 function get_workflows()
 {
     workflows_request();
-    // console.log(data);
     data.forEach(
         element => 
         {
