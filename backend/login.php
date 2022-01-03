@@ -30,11 +30,13 @@ if ($row = mysqli_fetch_row ($result))
 {
     $_SESSION["user_id"] = $row[0];
     $_SESSION["username"] = $row[1];
-    echo "[true,
-        {
-            'user_id':'$row[0]',
-            'username':'$row[1]'
-        }]";
+    header("Location: ../index.html");
+    // echo "[true,
+    //     {
+    //         'user_id':'$row[0]',
+    //         'username':'$row[1]'
+    //     }]";
+    
 }
 else
 {

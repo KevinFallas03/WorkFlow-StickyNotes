@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
+    <title>Register Form</title>
     <script src="../scripts/login.js"></script>
     <style>
         @import url('../css/login-register.css');
@@ -12,9 +12,9 @@
 </head>    
 <body>    
     <div class="">
-        <form action="../backend/login.php" method="post" enctype="multipart/form-data">
-            <h2>Login</h2>
-            <p class="">Enter Login Details</p>
+        <form action="../backend/register.php" method="post" enctype="multipart/form-data">
+            <h2>Register</h2>
+            <p class="">Enter Register Details</p>
             <div class="">
                 <input type="text" id="username_id" name="username" placeholder="Username" required="required">
             </div>
@@ -22,10 +22,10 @@
                 <input type="password" id="password_id" name="password" placeholder="Password" required="required">
             </div>
             <div class="">
-                <button type="submit" name="save" class="btn btn-success btn-lg btn-block">Login</button>
+                <button type="submit" name="save" class="btn btn-success btn-lg btn-block">Register</button>
             </div>
-            <div class="">Don't have an account? <a href="register.html">Register Here</a></div>
+            <div class="">Already have an account? <a href="login.html">Login Here</a></div>
         </form>
     </div>  
 </body>    
-</html>     
+</html> 

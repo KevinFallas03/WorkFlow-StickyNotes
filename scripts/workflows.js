@@ -1,5 +1,5 @@
 var data = [{}]
-var url = "http://inclusive-whiteboard.com/backend/get_workflows.php?user_id=1"
+var url = "../backend/get_workflows.php"
 
 function workflows_request()
 {

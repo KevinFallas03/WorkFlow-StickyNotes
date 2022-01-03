@@ -1,5 +1,5 @@
 <?php
-//session_start();
+session_start();
 
 //require "control_sesion.php"; //importa el control de sesiones el require detecta errores Fatales en la ejecución del archivo importado no así el include!
 include "mysqli_connection.php";
@@ -22,7 +22,7 @@ if (!isset($_REQUEST["user_id"]))
     exit();
 }
 
-$user_id=$_REQUEST["user_id"];
+$user_id=$_SESSION["user_id"];
 
 $conn = get_connection();
 
