@@ -3,7 +3,7 @@ var data = [{}]
 
 function workflows_request()
 {
-    var url = "http://inclusive-whiteboard.com/backend/get_workflows.php"
+    var url = "/backend/get_workflows.php"
     var xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function() 
@@ -41,7 +41,6 @@ function get_workflows()
     data.forEach(
         element => 
         {
-            console.log(element);
             workflow = document.createElement("div");
             workflow.className = "workflow-item";
             workflow.setAttribute("id", element.id);
@@ -74,9 +73,9 @@ function get_workflows()
             workflow_clickable.innerHTML = element.name;
 
             delete_button.onclick = () => {
-                alert("Deleting workflow " + element.name);
-                workflow.remove();
+                alert("Deleting workflow " + element.name + " id:" + element.id);
                 delete_workflow(element.id);
+                workflow.remove();
             };
 
             edit_button.onclick = () => {
@@ -105,29 +104,32 @@ function get_workflows()
 
 function delete_workflow(id){
 
-    var url = "http://inclusive-whiteboard.com/backend/delete_workflow.php"
+    var url = "/backend/delete_workflow.php"
     var xhttp = new XMLHttpRequest();
-
+    console.log("En delete ajax");
     xhttp.onreadystatechange = function() 
     {
         
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) 
         {
             response=eval ("("+xhttp.responseText+")");
-            console.log(response);
+            //console.log(response);
             if (response[0]==false)
             {
                 console.log(response[1].error);
             }
             else
             {
-                data = response;
+                alert("Deleted succesfully");
             }
         }
         else {
             console.log({'status': this.status, 'state': this.readyState})
         }
     };
-    xhttp.open("DELETE", url, false);
-    xhttp.send(`workflow_id=${id}`);  
+    xhttp.open("DELETE", url, true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var parameters = new FormData();
+    parameters.append('workflow_id', data);
+    xhttp.send(parameters);  
 }

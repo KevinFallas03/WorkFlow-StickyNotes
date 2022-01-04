@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 
 include "mysqli_connection.php";
 
@@ -8,12 +8,12 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 ini_set("display_errors", 1);
 /*************************************************/
 
-if (!isset($_SESSION["user_id"]))
+if (!isset($_REQUEST["user_id"]))
 {
     echo ("{'error':'login needed'}");
     exit();
 }
-$user_id = $_SESSION["user_id"];
+$user_id = $_REQUEST["user_id"];
 
 if (!isset($_REQUEST["workflow_id"]))
 {
@@ -32,11 +32,12 @@ $result = run_query(
 
     "
 );
-if($result!=false){
+
+if($result){
     echo "Workflow Deleted";
 }
 else{
-    echo "Could not delete the workflow";
+    echo "Workflow Not Deleted";
 }
 
 mysqli_close($conn);
