@@ -17,7 +17,7 @@ function login()
             }
             else
             {
-                window.location.href = 'http://inclusive-whiteboard.com/';
+                window.location.href = 'index.html';
             }
         }
     };
