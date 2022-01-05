@@ -28,9 +28,11 @@ $conn = get_connection();
 $result = run_query(
     $conn, 
     "   
-    INSERT INTO `inclusive_whiteboard`.`sticky_notes`
-    (`user_id`, `workflow_id`, `status_id`, `html_code`, `description`)
-    VALUES (2, $data->workflow_id, 2, '$data->html_code', '$data->description');
+    UPDATE `inclusive_whiteboard`.`sticky_notes`
+    SET `status_id` = 2,
+        `html_code` = '$data->html_code',
+        `description` = '$data->description'
+    WHERE id = $data->note_id;
     "
 );
 
