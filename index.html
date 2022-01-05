@@ -36,17 +36,16 @@
         </div>
         <div class="board">
             <table id="workflow">
-                <tr>
+                <tr id="workflow_headers">
                     <th>Sticky notes</th>
                     <th>On hold</th>
                     <th>In progress</th>
                     <th>Need revision</th>
                     <th>Approved</th>
                 </tr>
-        
                 <tbody>
                     <tr>
-                        <td class="drop" style="text-align: center;">
+                        <td id="stickynotes_config" class="drop" style="text-align: center;">
                             <input type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5">
                             <button onclick="createNote('#ace9dd')">Nueva nota</button>
                         </td>

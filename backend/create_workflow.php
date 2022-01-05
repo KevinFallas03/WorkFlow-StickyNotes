@@ -14,9 +14,16 @@ if (!isset($_SESSION["user_id"]))
     echo ("{'error':'log in needed'}");
     exit();
 }
-
 $user_id=$_SESSION["user_id"];
-// $body = 
+
+if (!isset($_POST['json_string']))
+{
+    echo ("{'error':'workflow_id parameters is needed'}");
+    exit();
+}
+
+$body = $_POST['json_string'];
+$data = json_decode($body);
 
 $conn = get_connection();
 $query = "  INSERT INTO workflows
@@ -27,11 +34,11 @@ $query = "  INSERT INTO workflows
             )
             VALUES
             (
-
+                  $user_id
+                , $data->name
+                , $data->description
             )
-                 
-            FROM workflows 
-            WHERE user_id='$user_id' ";
+        ";
 
 $workflows = run_query(
     $conn, 
