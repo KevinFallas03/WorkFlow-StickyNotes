@@ -120,7 +120,7 @@ function dragElement(elmnt, toolsContainer) {
 }
 
 function insert_note(elmnt){
-  var url = "/backend/insert_stickynote.php"
+  var url = "/backend/stickynotes/insert_stickynote.php"
   var xhttp = new XMLHttpRequest();
 
   xhttp.onreadystatechange = function(){
@@ -150,7 +150,7 @@ function insert_note(elmnt){
 }
 
 function update_note(elmnt){
-  var url = "/backend/update_stickynote.php"
+  var url = "/backend/stickynotes/update_stickynote.php"
   var xhttp = new XMLHttpRequest();
 
   xhttp.onreadystatechange = function(){

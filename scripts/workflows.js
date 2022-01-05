@@ -6,7 +6,7 @@ window.onload = () =>{
 
 function workflows_request()
 {
-    var url = "/backend/get_workflows.php"
+    var url = "/backend/workflows/get_workflows.php"
     var xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function() 
@@ -113,7 +113,7 @@ function create_workflow_on_httml(element) {
 }
 
 function edit_workflow_data(workflow_id, name, description){
-    var url = "/backend/edit_workflow_data.php";
+    var url = "/backend/workflows/edit_workflow_data.php";
     var params = new FormData();
     params.append("workflow_id", workflow_id);
     params.append("name", name);
@@ -150,7 +150,7 @@ function new_workflow(){
 }
 
 function post_workflow(name, description){
-    var url = "/backend/create_workflow.php"
+    var url = "/backend/workflows/create_workflow.php"
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function(){
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
@@ -181,7 +181,7 @@ function post_workflow(name, description){
 } 
 
 function delete_workflow(workflow){
-    var url = "/backend/delete_workflow.php";
+    var url = "/backend/workflows/delete_workflow.php";
     
     var params = new FormData();
     params.append("workflow_id", workflow.id);
