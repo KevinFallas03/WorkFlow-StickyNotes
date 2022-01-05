@@ -51,6 +51,7 @@ function createNote(){
 
   document.body.appendChild(note);
   dragElement(note,toolsContainer);
+  insert_note(note);
 }
 
 function dragElement(elmnt, toolsContainer) {
@@ -109,4 +110,69 @@ function dragElement(elmnt, toolsContainer) {
     document.onmouseup = null;
     document.onmousemove = null;
   }
+}
+
+function insert_note(elmnt){
+  var url = "/backend/insert_stickynote.php"
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function(){
+      if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+          console.log(xhttp.responseText);
+          // response=eval ("("+xhttp.responseText+")");
+          
+          // if (response[0]==false){
+          //     console.log(response[1].error);
+          // }
+          // else{
+          //     alert("Sticky note added");
+          // }
+      }
+      else {
+          console.log({'status': this.status, 'state': this.readyState})
+      }
+  };
+  xhttp.open("POST", url, false);
+  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  var parameters = {
+    'workflow_id': 14,
+    'status_id': elmnt.parentElement.id,
+    'html_code': elmnt.outerHTML,
+    'description': elmnt.firstChild.value,
+  };
+
+  var str_json = "json_string=" + (JSON.stringify(parameters));
+  xhttp.send(str_json);
+}
+
+function upsert_note(elmnt){
+  var url = "/backend/upsert_stickynote.php"
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function(){
+      if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+          response=eval ("("+xhttp.responseText+")");
+          
+          if (response[0]==false){
+              console.log(response[1].error);
+          }
+          else{
+              alert("Sticky note added");
+          }
+      }
+      else {
+          console.log({'status': this.status, 'state': this.readyState})
+      }
+  };
+  xhttp.open("POST", url, false);
+  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  
+  var parameters = new FormData();
+
+  parameters.append('workflow_id', 14);
+  parameters.append('status_id', elmnt.parentElement.id);
+  parameters.append('html_code', elmnt);
+  parameters.append('description', elmnt.firstChild.value);
+
+  var str_json = "json_string=" + (JSON.stringify(parameters));
+  
+  request.send(str_json);
 }
