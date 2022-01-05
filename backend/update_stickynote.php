@@ -17,7 +17,7 @@ ini_set("display_errors", 1);
 
 if (!isset($_POST['json_string']))
 {
-    echo ("{'error':'workflow_id parameters is needed'}");
+    echo ("{'error':'json_string body is needed'}");
     exit();
 }
 $body = $_POST['json_string'];
@@ -29,7 +29,7 @@ $result = run_query(
     $conn, 
     "   
     UPDATE `inclusive_whiteboard`.`sticky_notes`
-    SET `status_id` = 2,
+    SET `status_id` = 3,
         `html_code` = '$data->html_code',
         `description` = '$data->description'
     WHERE id = $data->note_id;
@@ -39,7 +39,8 @@ $result = run_query(
 if($result){
     // echo "Workflow Deleted";
     $last_id = $conn->insert_id;
-    echo ($last_id);
+    // echo ($last_id);
+    echo $result;
 }
 else{
     echo -1;

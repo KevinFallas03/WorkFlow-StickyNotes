@@ -11,6 +11,8 @@ function createNote(){
   var note = document.createElement("DIV");
   note.className = "sticky_note";
   note.style.background = color;
+  note.style.top = '10px';
+  note.style.left = '10px';
 
   // Create the container for the note tool (move, change color and delete)
   var toolsContainer = document.createElement("DIV");
@@ -43,7 +45,10 @@ function createNote(){
   //Create the remove button
   var removeBtn = document.createElement("BUTTON");
   removeBtn.className = "remove_btn";
-  removeBtn.onclick = function() {note.remove()};
+  removeBtn.onclick = function() {
+    note.remove();
+    delete_note(note);
+  };
   toolsContainer.appendChild(removeBtn);
 
   note.ondblclick = function() {toolsContainer.style.display = 'block';};
@@ -153,9 +158,6 @@ function update_note(elmnt){
           if (xhttp.responseText < 0){ // If is negative, there was an error
              alert("Error: Sticky note not saved");
           }
-          // else{
-          //   elmnt.id = "sticky_note_"+xhttp.responseText;
-          // }
       }
       else {
           console.log({'status': this.status, 'state': this.readyState})
@@ -172,4 +174,31 @@ function update_note(elmnt){
 
   var str_json = "json_string=" + (JSON.stringify(parameters));
   xhttp.send(str_json);
+}
+
+function delete_note(elmnt){
+  var url = "/backend/delete_stickynote.php";
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("POST", url, false);
+  // xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  xhttp.onreadystatechange = function() {
+      if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+          console.log(xhttp.responseText);
+          // if (response[0] == false){
+          //     console.log(response[0].error);
+          // } else {
+          //     window.location = "index.html";
+          // }
+      }
+      else {
+          console.log({"status": this.status, "state": this.readyState})
+      }
+  };
+
+  var parameters = new FormData();
+  parameters.append("note_id", elmnt.id.split("_")[2]);
+
+  xhttp.send(parameters);
 }
