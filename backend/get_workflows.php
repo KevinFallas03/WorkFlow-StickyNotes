@@ -18,18 +18,18 @@ if (!isset($_SESSION["user_id"]))
 $user_id=$_SESSION["user_id"];
 
 $conn = get_connection();
+$query = "  SELECT 
+                  id
+                , user_id
+                , name
+                , description
+                , creation_date 
+            FROM workflows 
+            WHERE user_id='$user_id' ";
 
 $workflows = run_query(
     $conn, 
-    "   SELECT 
-            id
-            , user_id
-            , name
-            , description
-            , creation_date 
-        FROM workflows 
-        WHERE user_id='$user_id'
-    "
+    $query
 );
 
 
