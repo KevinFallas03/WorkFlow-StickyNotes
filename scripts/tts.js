@@ -9,6 +9,7 @@ https://stackoverflow.com/questions/58049491/how-to-wait-until-speech-is-finishe
 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/pause
 
 */
+const STATE_LABEL = "Estado";
 const HelperTTS = {
     pointer: {
         row: 0,
@@ -37,7 +38,7 @@ const startTTS = () => {
 
 const initTTS = () => {
     if ('speechSynthesis' in window) {
-        HelperTTS.headers = window.document.getElementById("workflow").children[0].children;
+        HelperTTS.headers = window.document.getElementById("workflow").children[0].children[0].children;
         HelperTTS.columns = window.document.getElementsByClassName("drop");
 
         document.addEventListener('keydown', (event) => {
@@ -63,14 +64,19 @@ const speak = (text) => {
     return new Promise(resolve => speechRequest.onend = resolve);
 }
 
-const getNoteContent = ({pointer, columns}) => columns[pointer.col].children[pointer.row].children[0].value;
+const getNoteTTS = ({pointer, columns, headers}) => {
+    const content = columns[pointer.col].children[pointer.row].children[0].value;
+    const header = headers[pointer.col].textContent;
+
+    return `${content}. ${STATE_LABEL}: ${header}. `
+}
 
 function* getWorkflowIter(tts) {
     const {pointer, columns} = tts;
     while (true) {
         const rows = columns[pointer.col].children;
         if (pointer.row < rows.length) {
-            yield getNoteContent(tts);
+            yield getNoteTTS(tts);
         }
 
         if (!moveDown(tts)) {
