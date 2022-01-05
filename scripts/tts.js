@@ -17,6 +17,7 @@ const HelperTTS = {
     },
     paused: false,
     initialized: false,
+    blockKeys: false,
     headers: null,
     columns: null
 }
@@ -29,6 +30,7 @@ const startTTS = () => {
     HelperTTS.pointer.col = 0; 
     if (moveRight(HelperTTS)) { // workflow not empty
         HelperTTS.paused = true;
+        HelperTTS.blockKeys = false;
         togglePause(HelperTTS);
     }
 }
@@ -61,14 +63,14 @@ const speak = (text) => {
     return new Promise(resolve => speechRequest.onend = resolve);
 }
 
-const getNoteContent = (pointer, rows) => rows[pointer.row].children[0].value;
+const getNoteContent = ({pointer, columns}) => columns[pointer.col].children[pointer.row].children[0].value;
 
 function* getWorkflowIter(tts) {
     const {pointer, columns} = tts;
     while (true) {
         const rows = columns[pointer.col].children;
         if (pointer.row < rows.length) {
-            yield getNoteContent(pointer, rows);
+            yield getNoteContent(tts);
         }
 
         if (!moveDown(tts)) {

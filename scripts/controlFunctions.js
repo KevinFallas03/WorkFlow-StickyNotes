@@ -1,12 +1,20 @@
 // Object to access control functions
 const controlFunctions = {};
 controlFunctions[" "] = togglePause;
-controlFunctions["ArrowUp"] = moveUp;
-controlFunctions["ArrowDown"] = moveDown;
-controlFunctions["ArrowLeft"] = moveLeft;
-controlFunctions["ArrowRight"] = moveRight;
+controlFunctions["ArrowUp"] = getMoveFunction(moveUp);
+controlFunctions["ArrowDown"] = getMoveFunction(moveDown);
+controlFunctions["ArrowLeft"] = getMoveFunction(moveLeft);
+controlFunctions["ArrowRight"] = getMoveFunction(moveRight);
 
 // Functions:
+
+function getMoveFunction(moveFunction) {
+    return (tts) => {
+        tts.blockKeys = true;
+        moveFunction(tts);
+        speak(getNoteContent(tts)).then(() => tts.blockKeys = false)
+    }
+}
 
 function togglePause(tts) {
     if (tts.paused) {
@@ -15,10 +23,12 @@ function togglePause(tts) {
         const playNext = () => {
             if (!tts.paused) {
                 const {value, done} = iter.next();
-                if (!done) {
-                    speak(value)
-                    .then(playNext);
+                if (done) {
+                    tts.blockKeys = true;
+                    return;
                 }
+                speak(value)
+                    .then(playNext);
             }
         }
         playNext();
@@ -32,12 +42,11 @@ function togglePause(tts) {
 function moveLeft(tts) {
     const {pointer, columns} = tts;
     let nextCol = pointer.col - 1;
-    while (nextCol >= 0) {
+    while (nextCol >= 1) {
         if(columns[nextCol].children.length > 0){
             pointer.col = nextCol;
-            pointer.row = 0;
-            moveDown(tts)
-            console.log(pointer);
+            pointer.row = -1;
+            moveDown(tts);
             return true;
         }
         nextCol--;
@@ -52,10 +61,7 @@ function moveRight(tts) {
         if(columns[nextCol].children.length > 0){
             pointer.col = nextCol;
             pointer.row = -1;
-            moveDown(tts)
-            console.log(pointer);
-
-
+            moveDown(tts);
             return true;
         }
         nextCol++;
@@ -66,7 +72,6 @@ function moveRight(tts) {
 function moveDown({pointer, columns}) {
     const rows = [...columns[pointer.col].children]
     const sortedRows = [...rows].sort((a, b) => parseInt(a.style["top"], 10) - parseInt(b.style["top"], 10));
-    console.log(sortedRows == rows);
     
     // Checks Dynamically for Changes In Workflow 
     let sortedRow = sortedRows.findIndex((e) => e == pointer.currentElement());
@@ -74,7 +79,6 @@ function moveDown({pointer, columns}) {
     const nextSortedRow = sortedRow + 1;
     if(nextSortedRow < sortedRows.length){
         pointer.row = rows.findIndex((e) => e == sortedRows[nextSortedRow]);;
-        console.log(pointer);
         return true;
     }
     return false;
@@ -90,7 +94,6 @@ function moveUp({pointer, columns}) {
     const nextSortedRow = sortedRow - 1;
     if(nextSortedRow >= 0){
         pointer.row = rows.findIndex((e) => e == sortedRows[nextSortedRow]);;
-        console.log(pointer);
         return true;
     }
     return false;
