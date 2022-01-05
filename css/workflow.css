@@ -58,7 +58,17 @@
   font-size: 16px;
   cursor: pointer; /* Mouse pointer on hover */
 }
-
 .crud-btn:hover {
   background-color: RoyalBlue;
 }
+
+.workflow-btns{
+  /* background-color:  var(--btn-crud-pastelblue); */
+  display: inline-block;
+  border: none; /* Remove borders */
+  /* color: white; */
+  width: 20px;
+  cursor: pointer; /* Mouse pointer on hover */
+  border-radius: 50%;
+}
+

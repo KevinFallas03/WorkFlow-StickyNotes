@@ -11,7 +11,6 @@ function workflows_request()
 
     xhttp.onreadystatechange = function() 
     {
-        
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) 
         {
             response = eval ("("+xhttp.responseText+")");
@@ -63,7 +62,7 @@ function create_workflow_on_httml(element) {
     edit_button.setAttribute("id", "edit_button" + element.id); 
     edit_button.className = "crud-btn";
     edit_icon = document.createElement("i");
-    edit_icon.className = "fa fa-pencil"; 
+    edit_icon.className = "fas fa-pencil-alt"; 
     edit_button.appendChild(edit_icon);
     
     info_button = document.createElement("div");
@@ -203,4 +202,46 @@ function delete_workflow(workflow){
             console.log({"status": this.status, "state": this.readyState})
         }
     };
+}
+
+function move_right(id){
+    var header = document.getElementById("th"+id);
+    var column = document.getElementById("td"+id);
+
+    var headers = document.getElementById('workflow_headers');
+    var body = document.getElementById('workflow_states');
+
+    for (let i = 0; i < column.children.length; i++) {
+        var left = parseInt(column.children[i].style.left.slice(0,-2));
+        column.children[i].style.left = (left+120)+'px';
+    }
+
+    for (let i = 0; i < column.nextElementSibling.children.length; i++) {
+        var left = parseInt(column.nextElementSibling.children[i].style.left.slice(0,-2));
+        column.nextElementSibling.children[i].style.left = (left-120)+'px';
+    }
+
+    headers.insertBefore(header,header.nextElementSibling.nextElementSibling);
+    body.insertBefore(column,column.nextElementSibling.nextElementSibling);
+}
+
+function move_left(id){
+    var header = document.getElementById("th"+id);
+    var column = document.getElementById("td"+id);
+
+    var headers = document.getElementById('workflow_headers');
+    var body = document.getElementById('workflow_states');
+
+    headers.insertBefore(header,header.previousElementSibling);
+    body.insertBefore(column,column.previousElementSibling);
+
+    for (let i = 0; i < column.children.length; i++) {
+        var left = parseInt(column.children[i].style.left.slice(0,-2));
+        column.children[i].style.left = (left-120)+'px';
+    }
+
+    for (let i = 0; i < column.nextElementSibling.children.length; i++) {
+        var left = parseInt(column.nextElementSibling.children[i].style.left.slice(0,-2));
+        column.nextElementSibling.children[i].style.left = (left+120)+'px';
+    }
 }

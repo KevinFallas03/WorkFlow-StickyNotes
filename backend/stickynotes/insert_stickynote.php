@@ -1,7 +1,7 @@
 <?php
 // session_start();
 
-include "mysqli_connection.php";
+include "../mysqli_connection.php";
 
 /*********Eliminar estando producción************/
 error_reporting(E_ERROR | E_WARNING | E_PARSE);

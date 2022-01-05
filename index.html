@@ -7,7 +7,8 @@
     <title>Inclusive Whiteboard</title>
     <script src="scripts/workflows.js"></script>
     <script src="scripts/stickynotes.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <!-- <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">    -->
     <style>
@@ -37,30 +38,95 @@
         <div class="board">
             <table id="workflow">
                 <tr id="workflow_headers">
-                    <th>Sticky notes</th>
-                    <th>On hold</th>
-                    <th>In progress</th>
-                    <th>Need revision</th>
-                    <th>Approved</th>
+                    <th id="sticky_note_option">Sticky notes
+                    </th>
+                    <th id="th1">On hold
+                        <br>
+                        <div>
+                            <div class="workflow-btns">
+                                <i class="far fa-plus-square"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="far fa-times-circle"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-left" onclick="move_left('1')"></i>
+                            </div>
+                            <div class="workflow-btns" onclick="move_right('1')">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </div>
+                        </div>
+                    </th>
+                    <th id="th2">In progress
+                        <br>
+                        <div>
+                            <div class="workflow-btns">
+                                <i class="far fa-plus-square"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="far fa-times-circle"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-left"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </div>
+                        </div>
+                    </th>
+                    <th id="th3">Need revision
+                        <br>
+                        <div>
+                            <div class="workflow-btns">
+                                <i class="far fa-plus-square"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="far fa-times-circle"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-left"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </div>
+                        </div>
+                    </th>
+                    <th id="th4">Approved
+                        <br>
+                        <div>
+                            <div class="workflow-btns">
+                                <i class="far fa-plus-square"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="far fa-times-circle"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-left"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </div>
+                        </div>
+                    </th>
                 </tr>
                 <tbody>
-                    <tr>
+                    <tr id="workflow_states">
                         <td id="stickynotes_config" class="drop" style="text-align: center;">
                             <input type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5">
                             <button onclick="createNote('#ace9dd')">Nueva nota</button>
                         </td>
         
-                        <td class="drop">
+                        <td id="td1" class="drop">
                             
                         </td>
         
-                        <td class="drop">
+                        <td id="td2" class="drop">
                         </td>
         
-                        <td class="drop">
+                        <td id="td3" class="drop">
                         </td>
         
-                        <td class="drop">
+                        <td id="td4" class="drop">
                         </td>
                     </tr>
                 </tbody>
