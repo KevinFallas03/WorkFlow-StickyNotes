@@ -34,7 +34,7 @@ function run_query($conn,$query)
     {
         $result_error = mysqli_error($conn);
         echo "[false,{'error':'Cannot run the query','error description':'$result_error'}]";
-        exit;
+        exit();
     }
     return ($result);
 }
