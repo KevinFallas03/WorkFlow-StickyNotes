@@ -29,12 +29,14 @@ function togglePause(tts) {
     }
 }
 
-function moveLeft({pointer, columns}) {
+function moveLeft(tts) {
+    const {pointer, columns} = tts;
     let nextCol = pointer.col - 1;
     while (nextCol >= 0) {
         if(columns[nextCol].children.length > 0){
             pointer.col = nextCol;
             pointer.row = 0;
+            moveDown(tts)
             console.log(pointer);
             return true;
         }
@@ -43,13 +45,17 @@ function moveLeft({pointer, columns}) {
     return false;
 }
 
-function moveRight({pointer, columns}) {
+function moveRight(tts) {
+    const {pointer, columns} = tts;
     let nextCol = pointer.col + 1;
     while (nextCol < columns.length) {
         if(columns[nextCol].children.length > 0){
             pointer.col = nextCol;
-            pointer.row = 0;
+            pointer.row = -1;
+            moveDown(tts)
             console.log(pointer);
+
+
             return true;
         }
         nextCol++;
@@ -57,24 +63,34 @@ function moveRight({pointer, columns}) {
     return false;
 }
 
-// ! Live Changes Arent Reflected
 function moveDown({pointer, columns}) {
-    const rows = columns[pointer.col].children
-    //const sortedStickyNotes = [...rows].sort((a, b) => a.style["top"] - b.style["top"]);
-    const nextRow = pointer.row + 1;
-    if(nextRow < rows.length){
-        pointer.row = nextRow;
+    const rows = [...columns[pointer.col].children]
+    const sortedRows = [...rows].sort((a, b) => parseInt(a.style["top"], 10) - parseInt(b.style["top"], 10));
+    console.log(sortedRows == rows);
+    
+    // Checks Dynamically for Changes In Workflow 
+    let sortedRow = sortedRows.findIndex((e) => e == pointer.currentElement());
+
+    const nextSortedRow = sortedRow + 1;
+    if(nextSortedRow < sortedRows.length){
+        pointer.row = rows.findIndex((e) => e == sortedRows[nextSortedRow]);;
+        console.log(pointer);
         return true;
     }
     return false;
 }
 
-// ! Live Changes Arent Reflected
 function moveUp({pointer, columns}) {
-    const rows = columns[pointer.col].children
-    const nextRow = pointer.row - 1;
-    if(nextRow >= 0){
-        pointer.row = nextRow;
+    const rows = [...columns[pointer.col].children]
+    const sortedRows = [...rows].sort((a, b) => parseInt(a.style["top"], 10) - parseInt(b.style["top"], 10));
+    
+    // Checks Dynamically for Changes In Workflow 
+    let sortedRow = sortedRows.findIndex((e) => e == pointer.currentElement());
+
+    const nextSortedRow = sortedRow - 1;
+    if(nextSortedRow >= 0){
+        pointer.row = rows.findIndex((e) => e == sortedRows[nextSortedRow]);;
+        console.log(pointer);
         return true;
     }
     return false;

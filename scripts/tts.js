@@ -12,11 +12,13 @@ https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/pause
 const HelperTTS = {
     pointer: {
         row: 0,
-        col: 1,
-        currentElement: null
+        col: 0,
+        currentElement: () => HelperTTS.columns[HelperTTS.pointer.col].children[HelperTTS.pointer.row]
     },
     paused: false,
-    initialized: false
+    initialized: false,
+    headers: null,
+    columns: null
 }
 
 const startTTS = () => {
@@ -24,10 +26,11 @@ const startTTS = () => {
         initTTS();  
     }
     HelperTTS.pointer.row = 0;
-    HelperTTS.pointer.col = 1;
-    HelperTTS.pointer.currentElement = 0;
-    HelperTTS.paused = true;
-    togglePause(HelperTTS);
+    HelperTTS.pointer.col = 0; 
+    if (moveRight(HelperTTS)) { // workflow not empty
+        HelperTTS.paused = true;
+        togglePause(HelperTTS);
+    }
 }
 
 const initTTS = () => {
