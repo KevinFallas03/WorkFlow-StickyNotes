@@ -23,9 +23,9 @@ CREATE TABLE IF NOT EXISTS inclusive_whiteboard.sticky_notes (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	user_id INT DEFAULT NULL,
 	workflow_id INT DEFAULT NULL,
-	status VARCHAR(50) NOT NULL,
-	description VARCHAR(255) DEFAULT NULL,
-	color VARCHAR(7) DEFAULT NULL,
+	status_id VARCHAR(50) NOT NULL,
+	html_code VARCHAR(1000) DEFAULT NULL,
+    description VARCHAR(255) DEFAULT NULL,
 	CONSTRAINT FOREIGN KEY fk_stickynotes_users (user_id) REFERENCES users (id),
 	CONSTRAINT FOREIGN KEY fk_stickynotes_workflow (workflow_id) REFERENCES workflows (id)
 ) AUTO_INCREMENT=1 ;
