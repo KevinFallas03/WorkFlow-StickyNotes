@@ -11,7 +11,8 @@
     <script src="scripts/controlFunctions.js"></script>
     <script src="scripts/tts.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <link rel="stylesheet" href="css/main.css"> -->
+    <!-- <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">    -->
     <style>
         @import url('css/main.css');
         @import url('css/workflow.css');
@@ -21,59 +22,55 @@
 </head>
 <body>
     <div class="navbar" id="navbar_id">
-        <a>New board</a>
-        <a>New note</a>
-        <a>Log in</a>
-        <a>Sign up</a>
+        <a>New workflow</a>
+        <!-- <a onclick="window.location.href='pages/login.html'">Log in</a>
+        <a onclick="window.location.href='pages/register.html'">Sign up</a>  -->
+        <a onclick="window.location.href='backend/logout.php'">Logout</a>
         <a class="icon" onclick="navbar_button()">
             <i class="fa fa-bars"></i>
         </a>
     </div>
-    <div class="workflows" >
-        <h2>Workflows 
-            <button onclick="get_workflows()">
-                <i class="fa fa-refresh" aria-hidden="true"></i>
-            </button>
-        </h2>
-        <div id="workflows_id" >
-            
+    <div id="content">
+        <div class="workflows" >
+            <h2>Workflows</h2>
+            <div id="workflow-list-id" class="workflow-list" >
+                
+            </div>
+        </div>
+        <div class="board">
+            <table id="workflow">
+                <tr id="workflow_headers">
+                    <th>Sticky notes</th>
+                    <th>On hold</th>
+                    <th>In progress</th>
+                    <th>Need revision</th>
+                    <th>Approved</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td id="stickynotes_config" class="drop" style="text-align: center;">
+                            <input type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5">
+                            <button onclick="createNote('#ace9dd')">Nueva nota</button>
+                        </td>
+        
+                        <td class="drop">
+                            
+                        </td>
+        
+                        <td class="drop">
+                        </td>
+        
+                        <td class="drop">
+                        </td>
+        
+                        <td class="drop">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div class="board">
-        <table id="workflow">
-            <tr>
-                <th>Sticky notes</th>
-                <th>On hold</th>
-                <th>In progress</th>
-                <th>Need revision</th>
-                <th>Approved</th>
-            </tr>
     
-            <tbody>
-                <tr>
-                    <td class="drop" style="text-align: center;">
-                        <input type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5">
-                        <button onclick="createNote('#ace9dd')">Nueva nota</button>
-                        <!-- ! TEMP Button -->
-                        <button onclick="startTTS()"> TEMP: Start TTS </button>
-                    </td>
-    
-                    <td class="drop">
-                        
-                    </td>
-    
-                    <td class="drop">
-                    </td>
-    
-                    <td class="drop">
-                    </td>
-    
-                    <td class="drop">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
 </body>
 </html>

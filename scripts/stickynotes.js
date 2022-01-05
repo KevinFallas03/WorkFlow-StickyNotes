@@ -9,22 +9,25 @@ function createNote(){
   
   // Create the main container
   var note = document.createElement("DIV");
-  note.id = "mydivheader";
+  note.className = "sticky_note";
   note.style.background = color;
+  note.style.top = '10px';
+  note.style.left = '10px';
 
-  // Create the container for the note tool (move, change color)
+  // Create the container for the note tool (move, change color and delete)
   var toolsContainer = document.createElement("DIV");
-  toolsContainer.id = "color_button_container";
+  toolsContainer.className = "color_button_container";
   toolsContainer.style.display = 'none';
 
   // Create the textarea
   var noteTextarea = document.createElement("TEXTAREA");
   noteTextarea.style.background = color;
+  noteTextarea.addEventListener("change",()=>{update_note(note);});
   
   // Create the change color input
   var changeColorInput = document.createElement("INPUT");
   changeColorInput.setAttribute("type", "color");
-  changeColorInput.id = "little_sticky_note_color";
+  changeColorInput.className = "little_sticky_note_color";
   changeColorInput.value = color;
   changeColorInput.addEventListener("change",(e)=>{
     note.style.background = e.target.value;
@@ -35,14 +38,17 @@ function createNote(){
 
   //Create the move button
   var moveBtn = document.createElement("BUTTON");
-  moveBtn.id = "move_btn";
+  moveBtn.className = "move_btn";
   moveBtn.onmouseover = function() {dragElement(note, toolsContainer)};
   toolsContainer.appendChild(moveBtn);
 
-  //Create the move button
+  //Create the remove button
   var removeBtn = document.createElement("BUTTON");
-  removeBtn.id = "remove_btn";
-  removeBtn.onclick = function() {note.remove()};
+  removeBtn.className = "remove_btn";
+  removeBtn.onclick = function() {
+    note.remove();
+    delete_note(note);
+  };
   toolsContainer.appendChild(removeBtn);
 
   note.ondblclick = function() {toolsContainer.style.display = 'block';};
@@ -51,6 +57,7 @@ function createNote(){
 
   document.body.appendChild(note);
   dragElement(note,toolsContainer);
+  insert_note(note);
 }
 
 function dragElement(elmnt, toolsContainer) {
@@ -63,7 +70,7 @@ function dragElement(elmnt, toolsContainer) {
   function dragMouseDown(e) {
     e = e || window.event;
     e.preventDefault();
-    elmnt.style.transform = 'rotate('+0+'deg)'; 
+    elmnt.style.transform = 'rotate('+6+'deg)'; 
     // get the mouse cursor position at startup:
     pos3 = e.clientX;
     pos4 = e.clientY;
@@ -105,8 +112,93 @@ function dragElement(elmnt, toolsContainer) {
     toolsContainer.style.display = 'none';
     elmnt.style.cursor = "text";
     elmnt.onmousedown = null;
-    elmnt.style.transform = 'rotate('+6+'deg)'; 
+    elmnt.style.transform = 'rotate('+0+'deg)'; 
     document.onmouseup = null;
     document.onmousemove = null;
+    update_note(elmnt);
   }
+}
+
+function insert_note(elmnt){
+  var url = "/backend/insert_stickynote.php"
+  var xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function(){
+      if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+          if (xhttp.responseText < 0){ // If is negative, there was an error
+             alert("Error: Sticky note not saved");
+          }
+          else{
+            elmnt.id = "sticky_note_"+xhttp.responseText;
+          }
+      }
+      else {
+          console.log({'status': this.status, 'state': this.readyState})
+      }
+  };
+  xhttp.open("POST", url, false);
+  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  var parameters = {
+    'workflow_id': 14,
+    'status_id': elmnt.parentElement.id,
+    'html_code': elmnt.outerHTML,
+    'description': elmnt.firstChild.value,
+  };
+
+  var str_json = "json_string=" + (JSON.stringify(parameters));
+  xhttp.send(str_json);
+}
+
+function update_note(elmnt){
+  var url = "/backend/update_stickynote.php"
+  var xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function(){
+      if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+          if (xhttp.responseText < 0){ // If is negative, there was an error
+             alert("Error: Sticky note not saved");
+          }
+      }
+      else {
+          console.log({'status': this.status, 'state': this.readyState})
+      }
+  };
+  xhttp.open("POST", url, false);
+  xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  var parameters = {
+    'note_id': elmnt.id.split("_")[2],
+    'status_id': elmnt.parentElement.id,
+    'html_code': elmnt.outerHTML,
+    'description': elmnt.firstChild.value,
+  };
+
+  var str_json = "json_string=" + (JSON.stringify(parameters));
+  xhttp.send(str_json);
+}
+
+function delete_note(elmnt){
+  var url = "/backend/delete_stickynote.php";
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("POST", url, false);
+  // xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  xhttp.onreadystatechange = function() {
+      if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+          console.log(xhttp.responseText);
+          // if (response[0] == false){
+          //     console.log(response[0].error);
+          // } else {
+          //     window.location = "index.html";
+          // }
+      }
+      else {
+          console.log({"status": this.status, "state": this.readyState})
+      }
+  };
+
+  var parameters = new FormData();
+  parameters.append("note_id", elmnt.id.split("_")[2]);
+
+  xhttp.send(parameters);
 }

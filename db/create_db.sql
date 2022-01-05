@@ -10,11 +10,6 @@ CREATE TABLE IF NOT EXISTS inclusive_whiteboard.users (
 ) AUTO_INCREMENT=1;
 
 
--- ALTER TABLE inclusive_whiteboard.users AUTO_INCREMENT=1;
--- INSERT INTO inclusive_whiteboard.users (user, password) VALUES ("kevin", "1234");
--- INSERT INTO inclusive_whiteboard.users (user, password) VALUES ("andres", "1234");
--- SELECT id, user FROM inclusive_whiteboard.users;
-
 CREATE TABLE IF NOT EXISTS inclusive_whiteboard.workflows (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	user_id INT NOT NULL,
@@ -24,23 +19,44 @@ CREATE TABLE IF NOT EXISTS inclusive_whiteboard.workflows (
 	CONSTRAINT FOREIGN KEY fk_workflows_users (user_id) REFERENCES users (id)
 ) AUTO_INCREMENT=1;
 
--- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 1", "Proyectos verano");
--- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 2", "Proyectos semestre 1 2022");
--- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (2, "1234", "Semestre 1 2019");
-
--- SELECT id, user_id, name, description, creation_date FROM inclusive_whiteboard.workflows WHERE user_id = 2;
-
 CREATE TABLE IF NOT EXISTS inclusive_whiteboard.sticky_notes (
 	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	user_id INT DEFAULT NULL,
 	workflow_id INT DEFAULT NULL,
-	status VARCHAR(50) NOT NULL,
-	description VARCHAR(255) DEFAULT NULL,
-	color VARCHAR(7) DEFAULT NULL,
+	status_id VARCHAR(50) NOT NULL,
+	html_code VARCHAR(1000) DEFAULT NULL,
+    description VARCHAR(255) DEFAULT NULL,
 	CONSTRAINT FOREIGN KEY fk_stickynotes_users (user_id) REFERENCES users (id),
 	CONSTRAINT FOREIGN KEY fk_stickynotes_workflow (workflow_id) REFERENCES workflows (id)
 ) AUTO_INCREMENT=1 ;
-  
+
+
+---- DUMMY USUARIOS 
+-- ALTER TABLE inclusive_whiteboard.users AUTO_INCREMENT=1; -- reinicia los ids de usuarios
+-- INSERT INTO inclusive_whiteboard.users (user, password) VALUES ("kevin", md5('12345'));
+-- INSERT INTO inclusive_whiteboard.users (user, password) VALUES ("madri", md5('12345'));
+-- INSERT INTO inclusive_whiteboard.users (user, password) VALUES ("eduardo", md5('12345'));
+-- SELECT id, user FROM inclusive_whiteboard.users;
+
+---- DUMMY WORKFLOWS
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 1", "Proyectos verano");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 2", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 3", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 4", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 5", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 6", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 7", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 8", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 9", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 10", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 11", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (1, "Tabla 12", "Proyectos semestre 1 2022");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (2, "WhiteBoard 0", "Semestre 1 2019 - Madri");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (2, "WhiteBoard 1", "Semestre 1 2019 - Madri");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (2, "WhiteBoard 2", "Semestre 2 2019 - Madri");
+-- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (3, "WhiteBoard 1", "Semestre 1 2019 - Madri");
+
+-- DUMMY STICKY NOTES
 -- INSERT INTO inclusive_whiteboard.sticky_notes (
 -- 	user_id,
 -- 	workflow_id,
