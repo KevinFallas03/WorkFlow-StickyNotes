@@ -9,7 +9,7 @@ https://stackoverflow.com/questions/58049491/how-to-wait-until-speech-is-finishe
 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/pause
 
 */
-const STATE_LABEL = "Estado";
+ const STATE_LABEL = "Estado";
 const HelperTTS = {
     pointer: {
         row: 0,
@@ -42,11 +42,13 @@ const initTTS = () => {
         HelperTTS.columns = window.document.getElementsByClassName("drop");
 
         document.addEventListener('keydown', (event) => {
-            if (HelperTTS.paused || event.key === " ") {
-                const foo = controlFunctions[event.key];
-                if(foo !== undefined){
-                    foo(HelperTTS);
-                }
+            if (!HelperTTS.blockKeys) {
+                if (HelperTTS.paused || event.key === " ") {
+                    const foo = controlFunctions[event.key];
+                    if(foo !== undefined){
+                        foo(HelperTTS);
+                    }
+                }    
             }
         });
     }

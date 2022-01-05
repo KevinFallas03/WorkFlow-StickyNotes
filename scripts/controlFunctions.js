@@ -12,7 +12,7 @@ function getMoveFunction(moveFunction) {
     return (tts) => {
         tts.blockKeys = true;
         moveFunction(tts);
-        speak(getNoteContent(tts)).then(() => tts.blockKeys = false)
+        speak(getNoteTTS(tts)).then(() => tts.blockKeys = false)
     }
 }
 
