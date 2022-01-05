@@ -1,5 +1,8 @@
 var data = [{}]
 
+window.onload = () =>{
+    get_workflows();
+}
 
 function workflows_request()
 {
@@ -11,11 +14,11 @@ function workflows_request()
         
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) 
         {
-            response=eval ("("+xhttp.responseText+")");
+            response = eval ("("+xhttp.responseText+")");
             console.log(response);
             if (response[0]==false)
             {
-                console.log(response[1].error);
+                console.log(response[0].error);
             }
             else
             {
@@ -23,16 +26,12 @@ function workflows_request()
             }
         }
         else {
-            console.log({'status': this.status, 'state': this.readyState})
+            console.log({"status": this.status, "state": this.readyState})
         }
     };
     xhttp.open("GET", url, false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send();  
-}
-
-window.onload = () =>{
-    get_workflows();
 }
 
 function get_workflows()
@@ -73,9 +72,11 @@ function get_workflows()
             workflow_clickable.innerHTML = element.name;
 
             delete_button.onclick = () => {
-                alert("Deleting workflow " + element.name + " id:" + element.id);
+                // alert("Deleting workflow " + element.name + " id:" + element.id);
+                workflow_to_delete = document.getElementsByName("workflow"+element.id);
+                // console.log(element.id);
                 delete_workflow(element.id);
-                workflow.remove();
+                //workflow_to_delete.remove();
             };
 
             edit_button.onclick = () => {
@@ -90,7 +91,6 @@ function get_workflows()
                 alert("Switching to workflow " + element.name);
             }
             
-            
             workflow.appendChild(workflow_clickable);
             workflow.appendChild(delete_button);
             workflow.appendChild(edit_button);
@@ -99,37 +99,34 @@ function get_workflows()
             document.getElementById("workflow-list-id").appendChild(workflow);
         }   
     )
-    
 }
 
 function delete_workflow(id){
-
-    var url = "/backend/delete_workflow.php"
+    console.log(id);
+    var url = "/backend/delete_workflow.php";
+    var params = "workflow_id="+ id;
+    console.log(params); 
     var xhttp = new XMLHttpRequest();
-    console.log("En delete ajax");
-    xhttp.onreadystatechange = function() 
-    {
-        
+    xhttp.open("DELETE", url, false);
+    // xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhttp.onreadystatechange = function() {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) 
         {
-            response=eval ("("+xhttp.responseText+")");
-            //console.log(response);
-            if (response[0]==false)
-            {
-                console.log(response[1].error);
-            }
-            else
-            {
-                alert("Deleted succesfully");
+            response = eval ("("+xhttp.responseText+")");
+            console.log(response);
+            if (response[0] == false){
+                console.log(response[0].error);
+            } else {
+                window.location = "index.html";
             }
         }
         else {
-            console.log({'status': this.status, 'state': this.readyState})
+            console.log({"status": this.status, "state": this.readyState})
         }
     };
-    xhttp.open("DELETE", url, true);
-    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    var parameters = new FormData();
-    parameters.append('workflow_id', data);
-    xhttp.send(parameters);  
+
+    xhttp.send(params);  
+
+    
 }
