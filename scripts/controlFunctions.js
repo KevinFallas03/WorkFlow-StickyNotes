@@ -29,22 +29,30 @@ function togglePause(tts) {
     }
 }
 
-function moveLeft({pointer}) {
-    const nextCol = pointer.col - 1;
-    if(nextCol >= 0){
-        pointer.col = nextCol;
-        pointer.row = 0;
-        return true;   
+function moveLeft({pointer, columns}) {
+    let nextCol = pointer.col - 1;
+    while (nextCol >= 0) {
+        if(columns[nextCol].children.length > 0){
+            pointer.col = nextCol;
+            pointer.row = 0;
+            console.log(pointer);
+            return true;
+        }
+        nextCol--;
     }
-    return false;  
+    return false;
 }
 
 function moveRight({pointer, columns}) {
-    const nextCol = pointer.col + 1;
-    if(nextCol < columns.length){
-        pointer.col = nextCol;
-        pointer.row = 0;
-        return true;
+    let nextCol = pointer.col + 1;
+    while (nextCol < columns.length) {
+        if(columns[nextCol].children.length > 0){
+            pointer.col = nextCol;
+            pointer.row = 0;
+            console.log(pointer);
+            return true;
+        }
+        nextCol++;
     }
     return false;
 }
