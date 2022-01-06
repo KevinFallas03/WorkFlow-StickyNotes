@@ -30,9 +30,6 @@ if (!isset($_REQUEST['description']))
 }
 $description = $_REQUEST['description'];
 
-echo "$name";
-echo "$description";
-
 $conn = get_connection();
 
 $insert_wf_query = "INSERT INTO workflows
