@@ -27,7 +27,7 @@ $conn = get_connection();
 $delete_workflow_query = "  DELETE FROM workflows
             WHERE id = '$workflow_id' AND user_id = '$user_id'; ";
 
-$delete_status_query = "  DELETE FROM status
+$delete_status_query = "  DELETE FROM states
             WHERE workflow_id =  $workflow_id ";
 
 $result = run_query(
