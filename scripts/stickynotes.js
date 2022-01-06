@@ -177,7 +177,7 @@ function update_note(elmnt){
 }
 
 function delete_note(elmnt){
-  var url = "/backend/delete_stickynote.php";
+  var url = "/backend/stickynotes/delete_stickynote.php";
 
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", url, false);
