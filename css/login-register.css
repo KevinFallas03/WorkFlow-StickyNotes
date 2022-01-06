@@ -1,3 +1,21 @@
+body { 
+    background-color: #344C7D;
+}
+
+.login-register { 
+    background-color: #80b0bd;
+    text-align: center;
+    width: 85%;
+    padding: 20px;
+    margin: 50px;
+}
+.input-details { 
+    margin: 5px;
+}
+
+.save-btn{
+    margin: 15px;
+}
 /* .login{  
     width: 382px;  
     overflow: hidden;  
