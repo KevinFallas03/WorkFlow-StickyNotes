@@ -246,3 +246,26 @@ function move_left(id){
         column.nextElementSibling.children[i].style.left = (left+120)+'px';
     }
 }
+
+function delete_status(id){
+    var header = document.getElementById("th"+id);
+    var column = document.getElementById("td"+id);
+    header.remove();
+    column.remove();
+}
+
+function create_status(id){
+    var header = document.getElementById("th"+id);
+    var column = document.getElementById("td"+id);
+
+    var headers = document.getElementById('workflow_headers');
+    var body = document.getElementById('workflow_states');
+
+    var new_state = prompt("Please enter your name", "New state");
+
+    var new_header = header.cloneNode(true);
+    var new_column = document.createElement("td");
+    new_header.textContent = new_state;
+    headers.insertBefore(new_header,header.nextElementSibling);
+    body.insertBefore(new_column,column.nextElementSibling);
+}
