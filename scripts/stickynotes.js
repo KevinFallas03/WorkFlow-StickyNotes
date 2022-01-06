@@ -91,7 +91,7 @@ function dragElement(elmnt, toolsContainer) {
     elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
     elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
 
-    for (var i = 1; i < table.rows[1].cells.length; i++) {
+    for (var i = 0; i < table.rows[1].cells.length; i++) {
         var rect = table.rows[1].cells[i].getBoundingClientRect();
         if(elmnt.getBoundingClientRect().x > rect.x && elmnt.getBoundingClientRect().x < rect.x+rect.width){
             last_selected = table.rows[1].cells[i]; 

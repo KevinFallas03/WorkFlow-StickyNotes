@@ -341,7 +341,6 @@ function get_workflow(){
     var workflow_id = window.localStorage.getItem("currentWorkflow");
     var url = "/backend/workflows/get_workflow.php?workflow_id="+workflow_id;
     var xhttp = new XMLHttpRequest();
-    var states = null;
     var params = new FormData();
     params.append("workflow_id", 19);
 
@@ -351,12 +350,12 @@ function get_workflow(){
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             //console.log(xhttp.responseText);
             response = eval("(" + xhttp.responseText + ")");
-            console.log(response);
             if (response[0] == false) {
                 console.log(response[0].error);
             }
             else {
-                states = response;
+                // states = response;
+                build_workflow(response);
             }
         }
         else {
@@ -365,4 +364,16 @@ function get_workflow(){
     };
     
     xhttp.send();
+}
+
+function build_workflow(states){
+    var headers = document.getElementById("workflow_headers");
+    var columns = document.getElementById("workflow_states");
+    headers.innerHTML = "";
+    columns.innerHTML = "";
+    states.forEach((state)=>{
+        
+    })
+    console.log(states);
+
 }

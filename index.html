@@ -29,7 +29,12 @@
         </a>
     </div>
     <div id="content">
-        <div class="workflows" >
+        <div class="workflows">
+            <h2>Tools</h2>
+            <div id="stickynotes_config" class="drop" style="text-align: center;">
+                <input style="width: 70px; height: 70px;" type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5"><br>
+                <button onclick="createNote('#ace9dd')">New sticky note</button>
+            </div>
             <h2>Workflows</h2>
             <div id="workflow-list-id" class="workflow-list" >
                 
@@ -38,8 +43,6 @@
         <div class="board">
             <table id="workflow">
                 <tr id="workflow_headers">
-                    <th id="sticky_note_option">Sticky notes
-                    </th>
                     <th id="1" name="state_1">On hold
                         <br>
                         <div>
@@ -111,10 +114,7 @@
                 </tr>
                 <tbody>
                     <tr id="workflow_states">
-                        <td id="stickynotes_config" class="drop" style="text-align: center;">
-                            <input type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5">
-                            <button onclick="createNote('#ace9dd')">Nueva nota</button>
-                        </td>
+                        
         
                         <td id="1" name = "statebody_1">
                             
