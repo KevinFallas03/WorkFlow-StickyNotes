@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inclusive Whiteboard</title>
     <script src="scripts/workflows.js"></script>
-    <script src="scripts/stickynotes.js"></script>
+    <!-- <script type="module" src="scripts/stickynotes.js"></script> -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <!-- <link rel="stylesheet" href="css/main.css">
@@ -35,7 +35,7 @@
             <h2>Tools</h2>
             <div id="stickynotes_config" class="drop" style="text-align: center;">
                 <input style="width: 70px; height: 70px;" type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5"><br>
-                <button onclick="createNote('#ace9dd')">New sticky note</button>
+                <button id="create_note" onclick="createNote('#ace9dd')">New sticky note</button>
             </div>
             <h2>Workflows</h2>
             <div id="workflow-list-id" class="workflow-list" >
@@ -45,91 +45,10 @@
         <div class="board">
             <table id="workflow">
                 <tr id="workflow_headers">
-                    <th id="1" name="state_1">On hold
-                        <br>
-                        <div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-left" onclick="move_left('1')"></i>
-                            </div>
-                            <div class="workflow-btns" onclick="delete_status('1')">
-                                <i class="far fa-times-circle"></i>
-                            </div>
-                            <div class="workflow-btns" onclick="create_status('1')">
-                                <i class="far fa-plus-square"></i>
-                            </div>
-                            <div class="workflow-btns" onclick="move_right('1')">
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </div>
-                        </div>
-                    </th>
-                    <th id="2" name="state_2">In progress
-                        <br>
-                        <div>
-                            <div class="workflow-btns">
-                                <i class="far fa-plus-square"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="far fa-times-circle"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-left"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </div>
-                        </div>
-                    </th>
-                    <th id="3" name="state_3">Need revision
-                        <br>
-                        <div>
-                            <div class="workflow-btns">
-                                <i class="far fa-plus-square"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="far fa-times-circle"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-left"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </div>
-                        </div>
-                    </th>
-                    <th id="4" name="state_4">Approved
-                        <br>
-                        <div>
-                            <div class="workflow-btns">
-                                <i class="far fa-plus-square"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="far fa-times-circle"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-left"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </div>
-                        </div>
-                    </th>
                 </tr>
                 <tbody>
                     <tr id="workflow_states">
-                        
-        
-                        <td id="1" name = "statebody_1">
-                            
-                        </td>
-        
-                        <td id="2" name="statebody_2">
-                        </td>
-        
-                        <td id="3" name="statebody_3">
-                        </td>
-        
-                        <td id="4" name="statebody_4">
-                        </td>
+
                     </tr>
                 </tbody>
             </table>

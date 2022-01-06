@@ -10,7 +10,7 @@ function workflows_request() {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            response = eval("(" + xhttp.responseText + ")");
+            var response = eval("(" + xhttp.responseText + ")");
             console.log(response);
             if (response[0] == false) {
                 console.log(response[0].error);
@@ -39,33 +39,33 @@ function get_workflows() {
 }
 
 function create_workflow_on_httml(element) {
-    workflow = document.createElement("div");
+    var workflow = document.createElement("div");
     workflow.className = "workflow-item";
     workflow.setAttribute("id", element.id);
     workflow.setAttribute("name", "workflow" + element.id);
 
-    delete_button = document.createElement("div");
+    var delete_button = document.createElement("div");
     delete_button.setAttribute("id", "delete_button" + element.id);
     delete_button.className = "crud-btn";
-    delete_icon = document.createElement("i");
+    var delete_icon = document.createElement("i");
     delete_icon.className = "fa fa-trash";
     delete_button.appendChild(delete_icon);
 
-    edit_button = document.createElement("div");
+    var edit_button = document.createElement("div");
     edit_button.setAttribute("id", "edit_button" + element.id);
     edit_button.className = "crud-btn";
-    edit_icon = document.createElement("i");
+    var edit_icon = document.createElement("i");
     edit_icon.className = "fas fa-pencil-alt";
     edit_button.appendChild(edit_icon);
 
-    info_button = document.createElement("div");
+    var info_button = document.createElement("div");
     info_button.setAttribute("id", "info_button" + element.id);
     info_button.className = "crud-btn";
-    info_icon = document.createElement("i");
+    var info_icon = document.createElement("i");
     info_icon.className = "fa fa-info-circle";
     info_button.appendChild(info_icon);
 
-    workflow_clickable = document.createElement("div");
+    var workflow_clickable = document.createElement("div");
     workflow_clickable.setAttribute("id", "wf_clickable" + element.id);
     workflow_clickable.className = "wf-clickable";
     workflow_clickable.innerHTML = element.name;
@@ -82,8 +82,6 @@ function create_workflow_on_httml(element) {
         element.name = prompt("Name ", element.name);
         element.description = prompt("Description", element.description);
         edit_workflow_data(element.id, element.name, element.description);
-        // console.log(new_name);
-        // console.log(new_description);
     };
 
     info_button.onclick = () => {
@@ -93,7 +91,6 @@ function create_workflow_on_httml(element) {
     };
 
     workflow_clickable.onclick = () => {
-        alert("Switching to workflow " + element.name);
         window.localStorage.setItem("currentWorkflow", element.id);
         get_workflow();
     }
@@ -118,7 +115,7 @@ function edit_workflow_data(workflow_id, name, description) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            // response = eval ("("+xhttp.responseText+")");
+            // var response = eval ("("+xhttp.responseText+")");
             console.log(response);
             if (response[0] == false) {
                 console.log(response[0].error);
@@ -137,7 +134,7 @@ function edit_workflow_data(workflow_id, name, description) {
 function new_workflow() {
     var name = prompt("Enter workflow's name: ");
     var description = prompt("Enter workflow's description: ");
-    
+
     post_workflow(name, description);
 }
 
@@ -151,25 +148,25 @@ function post_workflow(name, description) {
 
     xhttp.open("POST", url, false);
 
-    xhttp.onreadystatechange = function(){
+    xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             console.log(xhttp.responseText);
-            response = eval( "(" + xhttp.responseText + ")" );
-            
-            if (response[0]==false) {
+            var response = eval("(" + xhttp.responseText + ")");
+
+            if (response[0] == false) {
                 console.log(response[0].error);
             } else {
                 alert("Workflow added");
                 window.location = "index.html"
             }
         } else {
-            console.log({'status': this.status, 'state': this.readyState});
+            console.log({ 'status': this.status, 'state': this.readyState });
         }
     };
-    
-    
+
+
     xhttp.send(params);
-} 
+}
 
 function delete_workflow(workflow) {
     var url = "/backend/workflows/delete_workflow.php";
@@ -184,7 +181,7 @@ function delete_workflow(workflow) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            // response = eval ("("+xhttp.responseText+")");
+            // var response = eval ("("+xhttp.responseText+")");
             if (response[0] == false) {
                 console.log(response[0].error);
             } else {
@@ -242,15 +239,15 @@ function move_left(id) {
 function delete_status(id) {
     var parent = document.getElementById("workflow_states");
     var ch = [...parent.children];
-    var header2 = ch.find((child)=>{
-        return parseInt(child.id,10) === parseInt(id,10);
+    var header2 = ch.find((child) => {
+        return parseInt(child.id, 10) === parseInt(id, 10);
     })
     header2.remove();
 
     var parent = document.getElementById("workflow_headers");
     var ch = [...parent.children];
-    var header2 = ch.find((child)=>{
-        return parseInt(child.id,10) === parseInt(id,10);
+    var header2 = ch.find((child) => {
+        return parseInt(child.id, 10) === parseInt(id, 10);
     })
     header2.remove();
 }
@@ -266,11 +263,11 @@ function create_status(id) {
 
     var new_header = header.cloneNode(true);
     new_header.textContent = new_state;
-    new_header.id = parseInt(id)+1;
-    
+    new_header.id = parseInt(id) + 1;
+
     var new_column = document.createElement("td");
-    new_column.id = parseInt(id)+1;
-    
+    new_column.id = parseInt(id) + 1;
+
     create_state_buttons(new_header);
 
     headers.insertBefore(new_header, header.nextElementSibling);
@@ -288,8 +285,8 @@ function create_status(id) {
                 alert("Error: State not saved");
             }
             else {
-                new_header.setAttribute("name", "state_"+xhttp.responseText);
-                new_column.setAttribute("name", "statebody_"+xhttp.responseText);
+                new_header.setAttribute("name", "state_" + xhttp.responseText);
+                new_column.setAttribute("name", "statebody_" + xhttp.responseText);
             }
         }
         else {
@@ -301,14 +298,14 @@ function create_status(id) {
     var parameters = {
         'workflow_id': window.localStorage.getItem("currentWorkflow"),
         'name': new_state,
-        'position': parseInt(id)+1
+        'position': parseInt(id) + 1
     };
-    
+
     var str_json = "json_string=" + (JSON.stringify(parameters));
     xhttp.send(str_json);
 }
 
-function update_positions(elmnt){
+function update_positions(elmnt) {
     // var url = "/backend/states/update_state_position.php"
     // var xhttp = new XMLHttpRequest();
     while (elmnt = elmnt.nextElementSibling) {
@@ -318,7 +315,7 @@ function update_positions(elmnt){
 
         var params = new FormData();
 
-        elmnt.id = parseInt(elmnt.id)+1;
+        elmnt.id = parseInt(elmnt.id) + 1;
         var name = elmnt.getAttribute("name");
         db_id = name.split("_")[1];
         params.append("id", db_id);
@@ -328,46 +325,47 @@ function update_positions(elmnt){
     }
 }
 
-function create_state_buttons(elmnt){
+function create_state_buttons(elmnt) {
     var bd_id = elmnt.getAttribute("name").split("_")[1];
     elmnt.innerHTML += `<br><div><div id="left_btn_${elmnt.id}" onclick="move_left(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-left"></i></div><div id="delete_btn_${elmnt.id}" onclick="delete_status(${elmnt.id})" class="workflow-btns"><i class="far fa-times-circle"></i></div><div id="create_btn_${elmnt.id}" onclick="create_status(${elmnt.id})" class="workflow-btns"><i class="far fa-plus-square"></i></div><div id="right_btn_${elmnt.id}" onclick="move_right(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-right"></i></div></div>`;
 }
 
-function get_workflow(){
+function get_workflow() {
     var workflow_id = window.localStorage.getItem("currentWorkflow");
-    var url = "/backend/workflows/get_workflow.php?workflow_id="+workflow_id;
+    var url = "/backend/workflows/get_workflow.php?workflow_id=" + workflow_id;
     var xhttp = new XMLHttpRequest();
     var params = new FormData();
     params.append("workflow_id", 19);
 
-    xhttp.open("GET", url, false);    
-    
+    xhttp.open("GET", url, false);
+
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             //console.log(xhttp.responseText);
-            response = eval("(" + xhttp.responseText + ")");
-            if (response[0] == false) {
+            var response = eval("(" + xhttp.responseText + ")");
+            if (response[0] === false) {
                 console.log(response[0].error);
             }
             else {
                 // states = response;
                 build_workflow(response);
+                get_sticky_notes();
             }
         }
         else {
             console.log({ "status": this.status, "state": this.readyState })
         }
     };
-    
+
     xhttp.send();
 }
 
-function build_workflow(states){
+function build_workflow(states) {
     var headers = document.getElementById("workflow_headers");
     var columns = document.getElementById("workflow_states");
     headers.innerHTML = "";
     columns.innerHTML = "";
-    states.forEach((state)=>{
+    states.forEach((state) => {
         headers.innerHTML += `<th id="${state.position}" name="state_${state.id}">${state.name}
                                     <br>
                                     <div>
@@ -385,10 +383,12 @@ function build_workflow(states){
                                         </div>
                                     </div>
                                 </th>`
+
         columns.innerHTML += `<td id="${state.position}" name = "statebody_${state.id}"></td>`
     })
-    var current_workflow = data.find((workflow)=>{
-        return parseInt(workflow.id,10) === parseInt(window.localStorage.getItem("currentWorkflow"),10);
+
+    var current_workflow = data.find((workflow) => {
+        return parseInt(workflow.id, 10) === parseInt(window.localStorage.getItem("currentWorkflow"), 10);
     })
     var info_container = document.getElementsByClassName("workflow_info")[0];
     info_container.innerHTML = `<div style="border-style: groove; padding:3px ">
@@ -396,4 +396,266 @@ function build_workflow(states){
                                     <p>${current_workflow.description}</p>
                                     <p>${current_workflow.creation_date}</p>
                                 </div>`
+}
+
+function get_sticky_notes() {
+    var url = `/backend/stickynotes/get_stickynotes.php?workflow_id=${window.localStorage.getItem("currentWorkflow")}`;
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("GET", url, false);
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            var response = eval("(" + xhttp.responseText + ")");
+            if (response[0] == false) {
+                console.log(response[0].error);
+            } else {
+                add_notes_html(response);
+            }
+        } else {
+            console.log({ 'status': this.status, 'state': this.readyState });
+        }
+    };
+    xhttp.send();
+
+}
+
+function add_notes_html(notes) {
+    notes.forEach((note) => {
+        var state = document.getElementsByName(`statebody_${note.status_id}`)[0];
+        var new_div = document.createElement('div');
+        new_div.innerHTML = note.html_code;
+        state.appendChild(new_div); 
+        var note_added = document.getElementById(`sticky_note_${note.id}`);
+        set_note_functions(note_added);
+    });
+}
+
+function set_note_functions(note) {
+    var toolsContainer = note.children[1];
+    var noteTextarea = note.children[0];
+    var changeColorInput = toolsContainer.children[0];
+    var moveBtn = toolsContainer.children[1];
+    var removeBtn = toolsContainer.children[2];
+
+    note.ondblclick = function () { toolsContainer.style.display = 'block'; };
+    note.style.position = "fixed";
+
+    noteTextarea.addEventListener("change", () => { update_note(note); });
+
+    changeColorInput.addEventListener("change", (e) => {
+        note.style.background = e.target.value;
+        noteTextarea.style.background = e.target.value;
+        toolsContainer.style.display = 'none';
+    }, false);
+
+    moveBtn.onmouseover = function () { dragElement(note, toolsContainer) };
+
+    removeBtn.onclick = function () {
+        note.remove();
+        delete_note(note);
+    };
+}
+
+//Make the DIV element draggagle:
+function createNote() {
+
+    alert("bb");
+    // Get the value from the color input
+    var color = document.getElementById("sticky_note_color").value;
+
+    // Create the main container
+    var note = document.createElement("DIV");
+    note.className = "sticky_note";
+    note.style.background = color;
+    note.style.top = '10px';
+    note.style.left = '10px';
+
+    // Create the container for the note tool (move, change color and delete)
+    var toolsContainer = document.createElement("DIV");
+    toolsContainer.className = "color_button_container";
+    toolsContainer.style.display = 'none';
+
+    // Create the textarea
+    var noteTextarea = document.createElement("TEXTAREA");
+    noteTextarea.style.background = color;
+    noteTextarea.addEventListener("change", () => { update_note(note); });
+
+    // Create the change color input
+    var changeColorInput = document.createElement("INPUT");
+    changeColorInput.setAttribute("type", "color");
+    changeColorInput.className = "little_sticky_note_color";
+    changeColorInput.value = color;
+    changeColorInput.addEventListener("change", (e) => {
+        note.style.background = e.target.value;
+        noteTextarea.style.background = e.target.value;
+        toolsContainer.style.display = 'none';
+    }, false);
+    toolsContainer.appendChild(changeColorInput);
+
+    //Create the move button
+    var moveBtn = document.createElement("BUTTON");
+    moveBtn.className = "move_btn";
+    moveBtn.onmouseover = function () { dragElement(note, toolsContainer) };
+    toolsContainer.appendChild(moveBtn);
+
+    //Create the remove button
+    var removeBtn = document.createElement("BUTTON");
+    removeBtn.className = "remove_btn";
+    removeBtn.onclick = function () {
+        note.remove();
+        delete_note(note);
+    };
+    toolsContainer.appendChild(removeBtn);
+
+    note.ondblclick = function () { toolsContainer.style.display = 'block'; };
+    note.appendChild(noteTextarea);
+    note.appendChild(toolsContainer);
+
+    document.body.appendChild(note);
+    dragElement(note, toolsContainer);
+    insert_note(note);
+}
+
+function dragElement(elmnt, toolsContainer) {
+    elmnt.style.cursor = "move";
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    elmnt.onmousedown = dragMouseDown;
+    var table = document.getElementById('workflow');
+
+    var last_selected = null;
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        elmnt.style.transform = 'rotate(' + 6 + 'deg)';
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+
+        for (var i = 0; i < table.rows[1].cells.length; i++) {
+            var rect = table.rows[1].cells[i].getBoundingClientRect();
+            if (elmnt.getBoundingClientRect().x > rect.x && elmnt.getBoundingClientRect().x < rect.x + rect.width) {
+                last_selected = table.rows[1].cells[i];
+                table.rows[1].cells[i].style.background = "lightgray";
+                table.rows[1].cells[i].style.width = 130 + "px";
+            } else {
+                table.rows[1].cells[i].style.background = "white";
+                table.rows[1].cells[i].style.width = 120 + "px";
+            }
+        }
+    }
+
+    function closeDragElement() {
+        if (last_selected !== null) {
+            last_selected.appendChild(elmnt);
+            last_selected.style.background = "white";
+        }
+        toolsContainer.style.display = 'none';
+        elmnt.style.cursor = "text";
+        elmnt.onmousedown = null;
+        elmnt.style.transform = 'rotate(' + 0 + 'deg)';
+        document.onmouseup = null;
+        document.onmousemove = null;
+        update_note(elmnt);
+    }
+}
+
+function insert_note(elmnt) {
+    var url = "/backend/stickynotes/insert_stickynote.php"
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        console.log(xhttp.responseText);
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            if (xhttp.responseText < 0) { // If is negative, there was an error
+                alert("Error: Sticky note not saved");
+            }
+            else {
+                elmnt.id = "sticky_note_" + xhttp.responseText;
+            }
+        }
+        else {
+            console.log({ 'status': this.status, 'state': this.readyState })
+        }
+    };
+    xhttp.open("POST", url, false);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var parameters = {
+        'workflow_id': window.localStorage.getItem("currentWorkflow"),
+        'status_id': elmnt.parentElement.id,
+        'html_code': elmnt.outerHTML,
+        'description': elmnt.firstChild.value,
+    };
+
+    var str_json = "json_string=" + (JSON.stringify(parameters));
+    xhttp.send(str_json);
+}
+function update_note(elmnt) {
+    var url = "/backend/stickynotes/update_stickynote.php"
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            if (xhttp.responseText < 0) { // If is negative, there was an error
+                alert("Error: Sticky note not saved");
+            }
+        }
+        else {
+            console.log({ 'status': this.status, 'state': this.readyState })
+        }
+    };
+    xhttp.open("POST", url, false);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var parameters = {
+        'note_id': elmnt.id.split("_")[2],
+        'status_id': elmnt.parentElement.getAttribute("name").split("_")[1],
+        'html_code': elmnt.outerHTML,
+        'description': elmnt.firstChild.value,
+    };
+
+    var str_json = "json_string=" + (JSON.stringify(parameters));
+    xhttp.send(str_json);
+}
+
+function delete_note(elmnt) {
+    var url = "/backend/stickynotes/delete_stickynote.php";
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", url, false);
+    // xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            console.log(xhttp.responseText);
+            // if (response[0] == false){
+            //     console.log(response[0].error);
+            // } else {
+            //     window.location = "index.html";
+            // }
+        }
+        else {
+            console.log({ "status": this.status, "state": this.readyState })
+        }
+    };
+
+    var parameters = new FormData();
+    parameters.append("note_id", elmnt.id.split("_")[2]);
+
+    xhttp.send(parameters);
 }

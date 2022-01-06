@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 
 include "../mysqli_connection.php";
 
@@ -8,12 +8,12 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 ini_set("display_errors", 1);
 /*************************************************/
 
-// if (!isset($_SESSION["user_id"]))
-// {
-//     echo ("{'error':'login needed'}");
-//     exit();
-// }
-// $user_id = $_SESSION["user_id"];
+if (!isset($_SESSION["user_id"]))
+{
+    echo ("{'error':'login needed'}");
+    exit();
+}
+$user_id = $_SESSION["user_id"];
 
 if (!isset($_POST['json_string']))
 {
@@ -29,7 +29,7 @@ $result = run_query(
     $conn, 
     "   
     UPDATE `inclusive_whiteboard`.`sticky_notes`
-    SET `status_id` = 3,
+    SET `status_id` = $data->status_id,
         `html_code` = '$data->html_code',
         `description` = '$data->description'
     WHERE id = $data->note_id;
