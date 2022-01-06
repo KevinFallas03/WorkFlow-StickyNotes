@@ -51,8 +51,8 @@ const startTTS = () => {
 
 const initTTS = () => {
     if ('speechSynthesis' in window) {
-        HelperTTS.headers = window.document.getElementById("workflow").children[0].children[0].children;
-        HelperTTS.columns = window.document.getElementsByClassName("drop");
+        HelperTTS.headers = window.document.getElementById("workflow_headers").children;
+        HelperTTS.columns = window.document.getElementById("workflow_states").children;
 
         document.addEventListener('keydown', (event) => {
             if (!HelperTTS.blockKeys) {
