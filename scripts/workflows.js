@@ -95,6 +95,7 @@ function create_workflow_on_httml(element) {
     workflow_clickable.onclick = () => {
         alert("Switching to workflow " + element.name);
         window.localStorage.setItem("currentWorkflow", element.id);
+        get_workflow();
     }
 
     workflow.appendChild(workflow_clickable);
@@ -310,6 +311,7 @@ function create_status(id) {
     var str_json = "json_string=" + (JSON.stringify(parameters));
     xhttp.send(str_json);
 }
+
 function update_positions(elmnt){
     // var url = "/backend/states/update_state_position.php"
     // var xhttp = new XMLHttpRequest();
@@ -335,17 +337,32 @@ function create_state_buttons(elmnt){
     elmnt.innerHTML += `<br><div><div id="left_btn_${elmnt.id}" onclick="move_left(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-left"></i></div><div id="delete_btn_${elmnt.id}" onclick="delete_status(${elmnt.id})" class="workflow-btns"><i class="far fa-times-circle"></i></div><div id="create_btn_${elmnt.id}" onclick="create_status(${elmnt.id})" class="workflow-btns"><i class="far fa-plus-square"></i></div><div id="right_btn_${elmnt.id}" onclick="move_right(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-right"></i></div></div>`;
 }
 
-function add_btn_functions(elmnt){
-    document.getElementById('a').onclick = function() {
-        //do something
-        alert("Click Event Fired !")
-    }
-    // var left_btn = document.getElementById(`left_btn_${elmnt.id}`);
-    // left_btn.onclick = () => {move_left(elmnt.id)};
-    // var right_btn = document.getElementById(`right_btn_${elmnt.id}`);
-    // right_btn.onclick = () => {move_right(elmnt.id)};
-    // var delete_btn = document.getElementById(`delete_btn_${elmnt.id}`);
-    // delete_btn.onclick = () => {delete_status(elmnt.id)};
-    // var create_btn = document.getElementById(`create_btn_${elmnt.id}`);
-    // create_btn.onclick = () => {create_status(elmnt.id)};
+function get_workflow(){
+    var workflow_id = window.localStorage.getItem("currentWorkflow");
+    var url = "/backend/workflows/get_workflow.php?workflow_id="+workflow_id;
+    var xhttp = new XMLHttpRequest();
+    var states = null;
+    var params = new FormData();
+    params.append("workflow_id", 19);
+
+    xhttp.open("GET", url, false);    
+    
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            //console.log(xhttp.responseText);
+            response = eval("(" + xhttp.responseText + ")");
+            console.log(response);
+            if (response[0] == false) {
+                console.log(response[0].error);
+            }
+            else {
+                states = response;
+            }
+        }
+        else {
+            console.log({ "status": this.status, "state": this.readyState })
+        }
+    };
+    
+    xhttp.send();
 }
