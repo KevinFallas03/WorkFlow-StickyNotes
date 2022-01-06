@@ -23,7 +23,8 @@ function createNote(){
   var noteTextarea = document.createElement("TEXTAREA");
   noteTextarea.style.background = color;
   noteTextarea.addEventListener("change",()=>{update_note(note);});
-  
+  noteTextarea.addEventListener("focus",()=>{blockKeys(note);});
+  noteTextarea.addEventListener("blur",()=>{unblockKeys(note);});
   // Create the change color input
   var changeColorInput = document.createElement("INPUT");
   changeColorInput.setAttribute("type", "color");
