@@ -200,8 +200,8 @@ function delete_workflow(workflow) {
 }
 
 function move_right(id) {
-    var header = document.getElementsByClassName("state_" + id)[0];
-    var column = document.getElementsByClassName("state_body_" + id)[0];
+    var header = document.getElementsByName("state_" + id)[0];
+    var column = document.getElementsByName("statebody_" + id)[0];
     console.log(column);
 
     var headers = document.getElementById('workflow_headers');
@@ -222,8 +222,8 @@ function move_right(id) {
 }
 
 function move_left(id) {
-    var header = document.getElementsByClassName("state_" + id)[0];
-    var column = document.getElementsByClassName("state_body_" + id)[0];
+    var header = document.getElementsByName("state_" + id)[0];
+    var column = document.getElementsByName("statebody_" + id)[0];
 
     var headers = document.getElementById('workflow_headers');
     var body = document.getElementById('workflow_states');
@@ -243,15 +243,24 @@ function move_left(id) {
 }
 
 function delete_status(id) {
-    var header = document.getElementsByClassName("state_" + id)[0];
-    var column = document.getElementsByClassName("state_body_" + id)[0];
-    header.remove();
-    column.remove();
+    var parent = document.getElementById("workflow_states");
+    var ch = [...parent.children];
+    var header2 = ch.find((child)=>{
+        return parseInt(child.id,10) === parseInt(id,10);
+    })
+    header2.remove();
+
+    var parent = document.getElementById("workflow_headers");
+    var ch = [...parent.children];
+    var header2 = ch.find((child)=>{
+        return parseInt(child.id,10) === parseInt(id,10);
+    })
+    header2.remove();
 }
 
 function create_status(id) {
-    var header = document.getElementsByClassName("state_" + id)[0];
-    var column = document.getElementsByClassName("state_body_" + id)[0];
+    var header = document.getElementsByName("state_" + id)[0];
+    var column = document.getElementsByName("statebody_" + id)[0];
 
     var headers = document.getElementById('workflow_headers');
     var body = document.getElementById('workflow_states');
@@ -259,10 +268,19 @@ function create_status(id) {
     var new_state = prompt("Please enter the new state name", "New state");
 
     var new_header = header.cloneNode(true);
-    var new_column = document.createElement("td");
     new_header.textContent = new_state;
+    new_header.id = parseInt(id)+1;
+    
+    var new_column = document.createElement("td");
+    new_column.id = parseInt(id)+1;
+    
+    create_state_buttons(new_header);
+
     headers.insertBefore(new_header, header.nextElementSibling);
     body.insertBefore(new_column, column.nextElementSibling);
+
+    update_positions(new_header);
+    update_positions(new_column);
 
     var url = "/backend/states/insert_state.php"
     var xhttp = new XMLHttpRequest();
@@ -273,7 +291,8 @@ function create_status(id) {
                 alert("Error: State not saved");
             }
             else {
-                elmnt.id = "sticky_note_" + xhttp.responseText;
+                new_header.setAttribute("name", "state_"+xhttp.responseText);
+                new_column.setAttribute("name", "statebody_"+xhttp.responseText);
             }
         }
         else {
@@ -283,11 +302,50 @@ function create_status(id) {
     xhttp.open("POST", url, false);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     var parameters = {
-        'workflow_id': 14,
+        'workflow_id': window.localStorage.getItem("currentWorkflow"),
         'name': new_state,
-        'position': elmnt.outerHTML
+        'position': parseInt(id)+1
     };
-
+    
     var str_json = "json_string=" + (JSON.stringify(parameters));
     xhttp.send(str_json);
+}
+function update_positions(elmnt){
+    // var url = "/backend/states/update_state_position.php"
+    // var xhttp = new XMLHttpRequest();
+    while (elmnt = elmnt.nextElementSibling) {
+
+        // xhttp.open("POST", url, false);
+        // xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        var params = new FormData();
+
+        elmnt.id = parseInt(elmnt.id)+1;
+        var name = elmnt.getAttribute("name");
+        db_id = name.split("_")[1];
+        params.append("id", db_id);
+        params.append("new_position", parseInt(elmnt.id));
+
+        // xhttp.send(params);
+    }
+}
+
+function create_state_buttons(elmnt){
+    var bd_id = elmnt.getAttribute("name").split("_")[1];
+    elmnt.innerHTML += `<br><div><div id="left_btn_${elmnt.id}" onclick="move_left(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-left"></i></div><div id="delete_btn_${elmnt.id}" onclick="delete_status(${elmnt.id})" class="workflow-btns"><i class="far fa-times-circle"></i></div><div id="create_btn_${elmnt.id}" onclick="create_status(${elmnt.id})" class="workflow-btns"><i class="far fa-plus-square"></i></div><div id="right_btn_${elmnt.id}" onclick="move_right(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-right"></i></div></div>`;
+}
+
+function add_btn_functions(elmnt){
+    document.getElementById('a').onclick = function() {
+        //do something
+        alert("Click Event Fired !")
+    }
+    // var left_btn = document.getElementById(`left_btn_${elmnt.id}`);
+    // left_btn.onclick = () => {move_left(elmnt.id)};
+    // var right_btn = document.getElementById(`right_btn_${elmnt.id}`);
+    // right_btn.onclick = () => {move_right(elmnt.id)};
+    // var delete_btn = document.getElementById(`delete_btn_${elmnt.id}`);
+    // delete_btn.onclick = () => {delete_status(elmnt.id)};
+    // var create_btn = document.getElementById(`create_btn_${elmnt.id}`);
+    // create_btn.onclick = () => {create_status(elmnt.id)};
 }
