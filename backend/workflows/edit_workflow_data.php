@@ -2,7 +2,7 @@
 session_start();
 
 //require "control_sesion.php"; //importa el control de sesiones el require detecta errores Fatales en la ejecución del archivo importado no así el include!
-include "mysqli_connection.php";
+include "../mysqli_connection.php";
 
 /*********Eliminar estando producción************/
 error_reporting(E_ERROR | E_WARNING | E_PARSE);

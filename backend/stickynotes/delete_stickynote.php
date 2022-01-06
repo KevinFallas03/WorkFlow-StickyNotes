@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include "mysqli_connection.php";
+include "../mysqli_connection.php";
 
 /*********Eliminar estando producción************/
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -15,27 +15,27 @@ if (!isset($_SESSION["user_id"]))
 }
 $user_id = $_SESSION["user_id"];
 
-if (!isset($_REQUEST["workflow_id"]))
+if (!isset($_REQUEST['note_id']))
 {
-    echo ("{'error':'workflow_id parameters is needed'}");
+    echo ("{'error':'note_id param is needed'}");
     exit();
 }
-$workflow_id = $_REQUEST["workflow_id"]; 
+$note_id = $_REQUEST['note_id'];
 
 $conn = get_connection();
-$query = "  DELETE FROM workflows
-            WHERE id = '$workflow_id' AND user_id = '$user_id'; ";
-
 $result = run_query(
     $conn, 
-    $query
+    " 
+    DELETE FROM `inclusive_whiteboard`.`sticky_notes`
+    WHERE id = $note_id;
+    "
 );
 $rows_affected = $conn->affected_rows;
 
 if($rows_affected > 0){
-    echo "[true, {'deleted': '$workflow_id'}]";
+    echo $note_id;
 }else{
-    echo "[false, {'error': 'no rows affected'}]";
+    echo -1;
 }
 
 mysqli_close($conn);

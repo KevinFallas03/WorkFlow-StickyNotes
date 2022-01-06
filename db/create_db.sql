@@ -28,8 +28,23 @@ CREATE TABLE IF NOT EXISTS inclusive_whiteboard.sticky_notes (
     description VARCHAR(255) DEFAULT NULL,
 	CONSTRAINT FOREIGN KEY fk_stickynotes_users (user_id) REFERENCES users (id),
 	CONSTRAINT FOREIGN KEY fk_stickynotes_workflow (workflow_id) REFERENCES workflows (id)
-) AUTO_INCREMENT=1 ;
+) AUTO_INCREMENT=1;
 
+CREATE TABLE IF NOT EXISTS inclusive_whiteboard.states (
+	id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	user_id INT NOT NULL,
+	workflow_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+	position INT NOT NULL,
+    CONSTRAINT FOREIGN KEY fk_states_users (user_id) REFERENCES users (id),
+    CONSTRAINT FOREIGN KEY fk_states_workflow (workflow_id) REFERENCES workflows (id)
+) AUTO_INCREMENT=1;
+
+-- DUMMY STATES
+-- ALTER TABLE inclusive_whiteboard.states AUTO_INCREMENT=1; -- reinicia los ids de states
+INSERT INTO inclusive_whiteboard.states (user_id, workflow_id, name, position) VALUES (3, 22, "unstarted", 1);
+INSERT INTO inclusive_whiteboard.states (user_id, workflow_id, name, position) VALUES (3, 22, "started", 2);
+INSERT INTO inclusive_whiteboard.states (user_id, workflow_id, name, position) VALUES (3, 22, "finished", 3);
 
 ---- DUMMY USUARIOS 
 -- ALTER TABLE inclusive_whiteboard.users AUTO_INCREMENT=1; -- reinicia los ids de usuarios
@@ -54,7 +69,7 @@ CREATE TABLE IF NOT EXISTS inclusive_whiteboard.sticky_notes (
 -- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (2, "WhiteBoard 0", "Semestre 1 2019 - Madri");
 -- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (2, "WhiteBoard 1", "Semestre 1 2019 - Madri");
 -- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (2, "WhiteBoard 2", "Semestre 2 2019 - Madri");
--- INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (3, "WhiteBoard 1", "Semestre 1 2019 - Madri");
+INSERT INTO inclusive_whiteboard.workflows (user_id, name, description) VALUES (3, "WhiteBoard Para Borrar", "Semestre 1 2019 - Madri");
 
 -- DUMMY STICKY NOTES
 -- INSERT INTO inclusive_whiteboard.sticky_notes (
