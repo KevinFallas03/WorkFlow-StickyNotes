@@ -23,14 +23,25 @@ if (!isset($_REQUEST["workflow_id"]))
 $workflow_id = $_REQUEST["workflow_id"]; 
 
 $conn = get_connection();
-$query = "  DELETE FROM workflows
+
+$delete_workflow_query = "  DELETE FROM workflows
             WHERE id = '$workflow_id' AND user_id = '$user_id'; ";
+
+$delete_status_query = "  DELETE FROM status
+            WHERE workflow_id = '$workflow_id' ";
 
 $result = run_query(
     $conn, 
-    $query
+    $delete_status_query
 );
 $rows_affected = $conn->affected_rows;
+
+if($rows_affected > 0){
+    $result = run_query(
+        $conn, 
+        $delete_workflow_query
+    );
+}
 
 if($rows_affected > 0){
     echo "[true, {'deleted': '$workflow_id'}]";

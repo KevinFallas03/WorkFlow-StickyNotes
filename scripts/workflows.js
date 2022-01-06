@@ -101,6 +101,7 @@ function create_workflow_on_httml(element) {
 
     workflow_clickable.onclick = () => {
         alert("Switching to workflow " + element.name);
+        window.localStorage.setItem("currentWorkflow", element.id);
     }
     
     workflow.appendChild(workflow_clickable);
