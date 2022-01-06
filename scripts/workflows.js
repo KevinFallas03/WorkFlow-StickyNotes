@@ -134,10 +134,6 @@ function edit_workflow_data(workflow_id, name, description) {
     xhttp.send(params);
 }
 
-function add_states() {
-
-}
-
 function new_workflow() {
     var name = prompt("Enter workflow's name: ");
     var description = prompt("Enter workflow's description: ");
@@ -372,8 +368,32 @@ function build_workflow(states){
     headers.innerHTML = "";
     columns.innerHTML = "";
     states.forEach((state)=>{
-        
+        headers.innerHTML += `<th id="${state.position}" name="state_${state.id}">${state.name}
+                                    <br>
+                                    <div>
+                                        <div class="workflow-btns">
+                                            <i class="fas fa-arrow-circle-left" onclick="move_left('${state.id}')"></i>
+                                        </div>
+                                        <div class="workflow-btns" onclick="delete_status('${state.id}')">
+                                            <i class="far fa-times-circle"></i>
+                                        </div>
+                                        <div class="workflow-btns" onclick="create_status('${state.id}')">
+                                            <i class="far fa-plus-square"></i>
+                                        </div>
+                                        <div class="workflow-btns" onclick="move_right('${state.id}')">
+                                            <i class="fas fa-arrow-circle-right"></i>
+                                        </div>
+                                    </div>
+                                </th>`
+        columns.innerHTML += `<td id="${state.position}" name = "statebody_${state.id}"></td>`
     })
-    console.log(states);
-
+    var current_workflow = data.find((workflow)=>{
+        return parseInt(workflow.id,10) === parseInt(window.localStorage.getItem("currentWorkflow"),10);
+    })
+    var info_container = document.getElementsByClassName("workflow_info")[0];
+    info_container.innerHTML = `<div style="border-style: groove; padding:3px ">
+                                    <h2>${current_workflow.name}:</h2>
+                                    <p>${current_workflow.description}</p>
+                                    <p>${current_workflow.creation_date}</p>
+                                </div>`
 }
