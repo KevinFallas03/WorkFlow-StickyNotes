@@ -4,8 +4,8 @@
 
 function get_connection(){
 
-    $config = require 'config.php'; // import database credentials
-    if(!file_exists('config.php')){
+    $config = require '../config.php'; // import database credentials
+    if(!file_exists('../config.php')){
         throw new \Exception('Create config.php based on config.sample.php');
         exit();
     }
