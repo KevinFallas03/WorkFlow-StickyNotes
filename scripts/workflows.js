@@ -146,38 +146,41 @@ function add_states(){
 }
 
 function new_workflow(){
+    var name = prompt("Enter workflow's name: ");
+    var description = prompt("Enter workflow's description: ");
+    
+    post_workflow(name, description);
 
 }
 
 function post_workflow(name, description){
     var url = "/backend/workflows/create_workflow.php"
     var xhttp = new XMLHttpRequest();
+
+    var params = new FormData();
+    params.append("name", name);
+    params.append("description", description);
+
+    xhttp.open("POST", url, false);
+
     xhttp.onreadystatechange = function(){
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             console.log(xhttp.responseText);
-            // response=eval ("("+xhttp.responseText+")");
+            response = eval( "(" + xhttp.responseText + ")" );
             
-            // if (response[0]==false){
-            //     console.log(response[1].error);
-            // }
-            // else{
-            //     alert("Sticky note added");
-            // }
-        }
-        else {
-            console.log({'status': this.status, 'state': this.readyState})
+            if (response[0]==false) {
+                console.log(response[0].error);
+            } else {
+                alert("Workflow added");
+                window.location = "index.html"
+            }
+        } else {
+            console.log({'status': this.status, 'state': this.readyState});
         }
     };
-    xhttp.open("POST", url, false);
-    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    var parameters = {
-        'name': name,
-        'description': description,
-        'states': ["Unstared", "Started", "Finished"],
-    };
-
-    var str_json = "json_string=" + (JSON.stringify(parameters));
-    xhttp.send(str_json);
+    
+    
+    xhttp.send(params);
 } 
 
 function delete_workflow(workflow){
