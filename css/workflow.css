@@ -71,4 +71,6 @@
   cursor: pointer; /* Mouse pointer on hover */
   border-radius: 50%;
 }
-
+.workflow-btns:hover{
+  background-color: lightgreen;
+}

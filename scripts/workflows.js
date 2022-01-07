@@ -2,6 +2,12 @@ var data = [{}]
 
 window.onload = () => {
     get_workflows();
+    if(window.localStorage.getItem("currentWorkflow") !== null){
+        get_workflow();
+        document.getElementById("tools").style.display = "block";
+    }else{
+        document.getElementById("tools").style.display = "none";
+    }
 }
 // WORKFLOW FUNCTIONS
 function workflows_request() {
@@ -110,6 +116,7 @@ function create_workflow_on_httml(element) {
     workflow_clickable.onclick = () => {
         window.localStorage.setItem("currentWorkflow", element.id);
         get_workflow();
+        document.getElementById("tools").style.display = "block";
     }
 
     workflow.appendChild(workflow_clickable);
@@ -303,19 +310,10 @@ function move_left(id) {
 }
 
 function delete_status(id) {
-    var parent = document.getElementById("workflow_states");
-    var children_list = [...parent.children];
-    var header = children_list.find((child) => {
-        return parseInt(child.id, 10) === parseInt(id, 10);
-    })
+    var header = document.getElementsByName("state_"+id)[0];
+    var column = document.getElementsByName("statebody_"+id)[0];
     header.remove();
-
-    var parent = document.getElementById("workflow_headers");
-    var children_list = [...parent.children];
-    var header = children_list.find((child) => {
-        return parseInt(child.id, 10) === parseInt(id, 10);
-    })
-    header.remove();
+    column.remove();
 }
 
 function create_status(id) {
