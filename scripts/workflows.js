@@ -196,10 +196,13 @@ function delete_workflow(workflow) {
 function move_right(id) {
     var header = document.getElementsByName("state_" + id)[0];
     var column = document.getElementsByName("statebody_" + id)[0];
-    console.log(column);
 
     var headers = document.getElementById('workflow_headers');
     var body = document.getElementById('workflow_states');
+
+    var temp_id = column.id;
+    column.id = column.nextElementSibling.id;
+    column.nextElementSibling.id = temp_id;
 
     for (let i = 0; i < column.children.length; i++) {
         var left = parseInt(column.children[i].style.left.slice(0, -2));
@@ -210,6 +213,9 @@ function move_right(id) {
         var left = parseInt(column.nextElementSibling.children[i].style.left.slice(0, -2));
         column.nextElementSibling.children[i].style.left = (left - 120) + 'px';
     }
+
+    update_position(column);
+    update_position(column.nextElementSibling);
 
     headers.insertBefore(header, header.nextElementSibling.nextElementSibling);
     body.insertBefore(column, column.nextElementSibling.nextElementSibling);
@@ -225,6 +231,10 @@ function move_left(id) {
     headers.insertBefore(header, header.previousElementSibling);
     body.insertBefore(column, column.previousElementSibling);
 
+    var temp_id = column.id;
+    column.id = column.nextElementSibling.id;
+    column.nextElementSibling.id = temp_id;
+
     for (let i = 0; i < column.children.length; i++) {
         var left = parseInt(column.children[i].style.left.slice(0, -2));
         column.children[i].style.left = (left - 120) + 'px';
@@ -234,6 +244,9 @@ function move_left(id) {
         var left = parseInt(column.nextElementSibling.children[i].style.left.slice(0, -2));
         column.nextElementSibling.children[i].style.left = (left + 120) + 'px';
     }
+
+    update_position(column);
+    update_position(column.nextElementSibling);
 }
 
 function delete_status(id) {
@@ -263,10 +276,10 @@ function create_status(id) {
 
     var new_header = header.cloneNode(true);
     new_header.textContent = new_state;
-    new_header.id = parseInt(id) + 1;
+    new_header.id = parseInt(column.id) + 1;
 
     var new_column = document.createElement("td");
-    new_column.id = parseInt(id) + 1;
+    new_column.id = parseInt(column.id) + 1;
 
     create_state_buttons(new_header);
 
@@ -298,30 +311,44 @@ function create_status(id) {
     var parameters = {
         'workflow_id': window.localStorage.getItem("currentWorkflow"),
         'name': new_state,
-        'position': parseInt(id) + 1
+        'position': parseInt(new_column.id)
     };
 
     var str_json = "json_string=" + (JSON.stringify(parameters));
     xhttp.send(str_json);
 }
 
+function update_position(elmnt){
+    elmnt.id = parseInt(elmnt.id);
+    var name = elmnt.getAttribute("name");
+    db_id = name.split("_")[1];
+
+    var url = `/backend/states/update_state_position.php?id=${db_id}&new_position=${elmnt.id}`
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            console.log(xhttp.responseText);
+            if (xhttp.responseText < 0) { // If is negative, there was an error
+                alert("Error: State not saved");
+            }
+            else {
+                alert("Error: State saved");
+            }
+        }
+        else {
+            console.log({ 'status': this.status, 'state': this.readyState })
+        }
+    };
+    xhttp.open("POST", url, false);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhttp.send();
+}
+
 function update_positions(elmnt) {
-    // var url = "/backend/states/update_state_position.php"
-    // var xhttp = new XMLHttpRequest();
     while (elmnt = elmnt.nextElementSibling) {
-
-        // xhttp.open("POST", url, false);
-        // xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        var params = new FormData();
-
         elmnt.id = parseInt(elmnt.id) + 1;
-        var name = elmnt.getAttribute("name");
-        db_id = name.split("_")[1];
-        params.append("id", db_id);
-        params.append("new_position", parseInt(elmnt.id));
-
-        // xhttp.send(params);
+        update_position(elmnt);
     }
 }
 
@@ -432,6 +459,7 @@ function add_notes_html(notes) {
 }
 
 function set_note_functions(note) {
+    console.log(note.style.background)
     var toolsContainer = note.children[1];
     var noteTextarea = note.children[0];
     var changeColorInput = toolsContainer.children[0];
@@ -442,7 +470,7 @@ function set_note_functions(note) {
     note.style.position = "fixed";
 
     noteTextarea.addEventListener("change", () => { update_note(note); });
-
+    changeColorInput.value = '#fff';
     changeColorInput.addEventListener("change", (e) => {
         note.style.background = e.target.value;
         noteTextarea.style.background = e.target.value;
@@ -460,7 +488,6 @@ function set_note_functions(note) {
 //Make the DIV element draggagle:
 function createNote() {
 
-    alert("bb");
     // Get the value from the color input
     var color = document.getElementById("sticky_note_color").value;
 
