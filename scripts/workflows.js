@@ -11,7 +11,6 @@ function workflows_request() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             var response = eval("(" + xhttp.responseText + ")");
-            console.log(response);
             if (response[0] == false) {
                 console.log(response[0].error);
             }
@@ -29,33 +28,24 @@ function workflows_request() {
 }
 
 function get_workflows() {
-    data = [{}];
     workflows_request();
-    data.forEach(
-        element => {
-            create_workflow_on_httml(element);
-        }
-    )
+    data.forEach(element => {create_workflow_on_httml(element)})
 }
 
 function get_workflow() {
     var workflow_id = window.localStorage.getItem("currentWorkflow");
     var url = "/backend/workflows/get_workflow.php?workflow_id=" + workflow_id;
     var xhttp = new XMLHttpRequest();
-    var params = new FormData();
-    params.append("workflow_id", 19);
 
     xhttp.open("GET", url, false);
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            //console.log(xhttp.responseText);
             var response = eval("(" + xhttp.responseText + ")");
             if (response[0] === false) {
                 console.log(response[0].error);
             }
             else {
-                // states = response;
                 build_workflow(response);
                 get_sticky_notes();
             }
@@ -64,7 +54,6 @@ function get_workflow() {
             console.log({ "status": this.status, "state": this.readyState })
         }
     };
-
     xhttp.send();
 }
 
@@ -101,9 +90,7 @@ function create_workflow_on_httml(element) {
     workflow_clickable.innerHTML = element.name;
 
     delete_button.onclick = () => {
-        // alert("Deleting workflow " + element.name + " id:" + element.id);
         workflow_to_delete = document.getElementsByName("workflow" + element.id);
-        // console.log(element.id);
         delete_workflow(workflow_to_delete[0]); // always in 0 because the element returned is unique
     };
 
@@ -145,8 +132,7 @@ function edit_workflow_data(workflow_id, name, description) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            // var response = eval ("("+xhttp.responseText+")");
-            console.log(response);
+            var response = eval ("("+xhttp.responseText+")");
             if (response[0] == false) {
                 console.log(response[0].error);
             } else {
@@ -180,7 +166,6 @@ function post_workflow(name, description) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            console.log(xhttp.responseText);
             var response = eval("(" + xhttp.responseText + ")");
 
             if (response[0] == false) {
@@ -211,7 +196,7 @@ function delete_workflow(workflow) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            // var response = eval ("("+xhttp.responseText+")");
+            var response = eval ("("+xhttp.responseText+")");
             if (response[0] == false) {
                 console.log(response[0].error);
             } else {
@@ -246,7 +231,6 @@ function build_workflow(states) {
                                         </div>
                                     </div>
                                 </th>`
-
         columns.innerHTML += `<td id="${state.position}" name = "statebody_${state.id}"></td>`
     })
 
@@ -320,18 +304,18 @@ function move_left(id) {
 
 function delete_status(id) {
     var parent = document.getElementById("workflow_states");
-    var ch = [...parent.children];
-    var header2 = ch.find((child) => {
+    var children_list = [...parent.children];
+    var header = children_list.find((child) => {
         return parseInt(child.id, 10) === parseInt(id, 10);
     })
-    header2.remove();
+    header.remove();
 
     var parent = document.getElementById("workflow_headers");
-    var ch = [...parent.children];
-    var header2 = ch.find((child) => {
+    var children_list = [...parent.children];
+    var header = children_list.find((child) => {
         return parseInt(child.id, 10) === parseInt(id, 10);
     })
-    header2.remove();
+    header.remove();
 }
 
 function create_status(id) {
@@ -394,20 +378,6 @@ function update_position(elmnt){
 
     var url = `/backend/states/update_state_position.php?id=${db_id}&new_position=${elmnt.id}`
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            console.log(xhttp.responseText);
-            if (xhttp.responseText < 0) { // If is negative, there was an error
-                alert("Error: State not saved");
-            }
-            else {
-                alert("Error: State saved");
-            }
-        }
-        else {
-            console.log({ 'status': this.status, 'state': this.readyState })
-        }
-    };
     xhttp.open("POST", url, false);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
@@ -422,7 +392,6 @@ function update_positions(elmnt) {
 }
 
 function create_state_buttons(elmnt) {
-    var bd_id = elmnt.getAttribute("name").split("_")[1];
     elmnt.innerHTML += `<br><div><div id="left_btn_${elmnt.id}" onclick="move_left(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-left"></i></div><div id="delete_btn_${elmnt.id}" onclick="delete_status(${elmnt.id})" class="workflow-btns"><i class="far fa-times-circle"></i></div><div id="create_btn_${elmnt.id}" onclick="create_status(${elmnt.id})" class="workflow-btns"><i class="far fa-plus-square"></i></div><div id="right_btn_${elmnt.id}" onclick="move_right(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-right"></i></div></div>`;
 }
 
@@ -488,7 +457,6 @@ function set_note_functions(note) {
     };
 }
 
-//Make the DIV element draggagle:
 function createNote() {
 
     // Get the value from the color input
