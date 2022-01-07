@@ -362,7 +362,7 @@ function create_status(id) {
     var new_column = document.createElement("td");
     new_column.id = parseInt(column.id) + 1;
 
-    create_state_buttons(new_header);
+    
 
     headers.insertBefore(new_header, header.nextElementSibling);
     body.insertBefore(new_column, column.nextElementSibling);
@@ -397,6 +397,7 @@ function create_status(id) {
 
     var str_json = "json_string=" + (JSON.stringify(parameters));
     xhttp.send(str_json);
+    create_state_buttons(new_header);
 }
 
 function update_position(elmnt){
@@ -420,7 +421,8 @@ function update_positions(elmnt) {
 }
 
 function create_state_buttons(elmnt) {
-    elmnt.innerHTML += `<br><div><div id="left_btn_${elmnt.id}" onclick="move_left(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-left"></i></div><div id="delete_btn_${elmnt.id}" onclick="delete_status(${elmnt.getAttribute("name").split("_")[1]})" class="workflow-btns"><i class="far fa-times-circle"></i></div><div id="create_btn_${elmnt.id}" onclick="create_status(${elmnt.id})" class="workflow-btns"><i class="far fa-plus-square"></i></div><div id="right_btn_${elmnt.id}" onclick="move_right(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-right"></i></div></div>`;
+    var db_id = elmnt.getAttribute("name").split("_")[1];
+    elmnt.innerHTML += `<br><div><div id="left_btn_${db_id}" onclick="move_left(${db_id})" class="workflow-btns"><i class="fas fa-arrow-circle-left"></i></div><div id="delete_btn_${db_id}" onclick="delete_status(${db_id})" class="workflow-btns"><i class="far fa-times-circle"></i></div><div id="create_btn_${db_id}" onclick="create_status(${db_id})" class="workflow-btns"><i class="far fa-plus-square"></i></div><div id="right_btn_${db_id}" onclick="move_right(${db_id})" class="workflow-btns"><i class="fas fa-arrow-circle-right"></i></div></div>`;
 }
 
 
