@@ -460,12 +460,11 @@ function add_notes_html(notes) {
         new_div.innerHTML = note.html_code;
         state.appendChild(new_div); 
         var note_added = document.getElementById(`sticky_note_${note.id}`);
-        set_note_functions(note_added);
+        set_note_functions(note_added, note.description);
     });
 }
 
-function set_note_functions(note) {
-    console.log(note.style.background)
+function set_note_functions(note,description) {
     var toolsContainer = note.children[1];
     var noteTextarea = note.children[0];
     var changeColorInput = toolsContainer.children[0];
@@ -476,6 +475,7 @@ function set_note_functions(note) {
     note.style.position = "fixed";
 
     noteTextarea.addEventListener("change", () => { update_note(note); });
+    noteTextarea.textContent = description;
     changeColorInput.value = '#fff';
     changeColorInput.addEventListener("change", (e) => {
         note.style.background = e.target.value;
