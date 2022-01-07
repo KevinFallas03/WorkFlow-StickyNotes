@@ -13,8 +13,8 @@ td{
     height: 500px;
 }
 
-#move_btn{
-    background: url("../assests/images/move.png");
+.move_btn{
+    background: url("../assets/images/move.png");
     background-size: 20px 20px;
     height: 20px;
     width: 20px;
@@ -22,8 +22,8 @@ td{
     margin: 2px;
 }
 
-#remove_btn{
-    background: url("../assests/images/remove.png");
+.remove_btn{
+    background: url("../assets/images/remove.png");
     background-size: 20px 20px;
     height: 20px;
     width: 20px;
@@ -31,11 +31,11 @@ td{
     margin-left: 2px;
 }
 
-#little_sticky_note_color{
+.little_sticky_note_color{
     width: 25px;
 }
 
-#sticky_notes_btns{
+.sticky_notes_btns{
     border-radius: 50%;
     height: 80px;
     width: 80px;
@@ -45,7 +45,7 @@ table{
     border-collapse: collapse;
 }
 
-#color_button_container{
+.color_button_container{
     background-color: lightgrey;
     display: block;
     overflow: auto;
@@ -53,7 +53,7 @@ table{
     text-align: center;
 }
 
-#mydivheader {
+.sticky_note {
     position: fixed;
     top: 10px;
     cursor: move;
@@ -64,7 +64,7 @@ table{
     transition: ease-in-out;
 }
 
-#little_color_btn{
+.little_color_btn{
     border-radius: 50%;
     height: 15px;
     width: 15px;

@@ -1,0 +1,61 @@
+body { 
+    background-color: #344C7D;
+}
+
+.login-register { 
+    background-color: #80b0bd;
+    text-align: center;
+    width: 85%;
+    padding: 20px;
+    margin: 50px;
+}
+.input-details { 
+    margin: 5px;
+}
+
+.save-btn{
+    margin: 15px;
+}
+/* .login{  
+    width: 382px;  
+    overflow: hidden;  
+    margin: auto;  
+    margin: 20 0 0 450px;  
+    padding: 80px;  
+    background: #23463f;  
+    border-radius: 15px ;      
+}   */
+/* 
+#username_id{  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 3px;  
+    padding-left: 8px;  
+} 
+
+#password_id{  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 3px;  
+    padding-left: 8px;    
+}
+
+.submit-btn{  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 17px;  
+    padding-left: 7px;  
+    color: blue;
+}   */
+/* span{  
+    color: white;  
+    font-size: 17px;  
+}
+
+a{  
+    float: right;  
+    background-color: grey;  
+}   */

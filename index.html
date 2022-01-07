@@ -6,8 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inclusive Whiteboard</title>
     <script src="scripts/workflows.js"></script>
-    <script src="scripts/stickynotes.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <script type="module" src="scripts/stickynotes.js"></script> -->
+    <script src="scripts/speechRecognition.js"></script>
+    <script src="scripts/controlFunctions.js"></script>
+    <script src="scripts/tts.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <!-- <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">    -->
     <style>
@@ -19,16 +23,26 @@
 </head>
 <body>
     <div class="navbar" id="navbar_id">
-        <a>New workflow</a>
-        <a>New note</a>
-        <a>Log in</a>
-        <a>Sign up</a>
+        <a onclick="new_workflow()">New workflow</a>
+        <!-- <a onclick="window.location.href='pages/login.html'">Log in</a>
+        <a onclick="window.location.href='pages/register.html'">Sign up</a>  -->
+        <a onclick="window.location.href='backend/users/logout.php'">Logout</a>
         <a class="icon" onclick="navbar_button()">
             <i class="fa fa-bars"></i>
         </a>
     </div>
+    <br>
     <div id="content">
-        <div class="workflows" >
+        <div class="workflows">
+            <div class="workflow_info"></div>
+            <div id="tools">
+                <h2>Tools</h2>
+                <div id="stickynotes_config" class="drop" style="text-align: center;">
+                    <input style="width: 70px; height: 70px;" type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5"><br>
+                    <button id="create_note" onclick="createNote('#ace9dd')">New sticky note</button>
+                    <button id="startSpeechRecognition" onclick="startSpeechRecognition()">Start Speech Recognition</button>
+                </div>
+            </div>
             <h2>Workflows</h2>
             <div id="workflow-list-id" class="workflow-list" >
                 
@@ -36,33 +50,11 @@
         </div>
         <div class="board">
             <table id="workflow">
-                <tr>
-                    <th>Sticky notes</th>
-                    <th>On hold</th>
-                    <th>In progress</th>
-                    <th>Need revision</th>
-                    <th>Approved</th>
+                <tr id="workflow_headers">
                 </tr>
-        
                 <tbody>
-                    <tr>
-                        <td class="drop" style="text-align: center;">
-                            <input type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5">
-                            <button onclick="createNote('#ace9dd')">Nueva nota</button>
-                        </td>
-        
-                        <td class="drop">
-                            
-                        </td>
-        
-                        <td class="drop">
-                        </td>
-        
-                        <td class="drop">
-                        </td>
-        
-                        <td class="drop">
-                        </td>
+                    <tr id="workflow_states">
+
                     </tr>
                 </tbody>
             </table>

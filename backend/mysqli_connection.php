@@ -4,8 +4,8 @@
 
 function get_connection(){
 
-    $config = require 'config.php'; // import database credentials
-    if(!file_exists('config.php')){
+    $config = require '../config.php'; // import database credentials
+    if(!file_exists('../config.php')){
         throw new \Exception('Create config.php based on config.sample.php');
         exit();
     }
@@ -34,7 +34,7 @@ function run_query($conn,$query)
     {
         $result_error = mysqli_error($conn);
         echo "[false,{'error':'Cannot run the query','error description':'$result_error'}]";
-        exit;
+        exit();
     }
     return ($result);
 }
