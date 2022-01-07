@@ -2,8 +2,14 @@ var data = [{}]
 
 window.onload = () => {
     get_workflows();
+    if(window.localStorage.getItem("currentWorkflow") !== null){
+        get_workflow();
+        document.getElementById("tools").style.display = "block";
+    }else{
+        document.getElementById("tools").style.display = "none";
+    }
 }
-
+// WORKFLOW FUNCTIONS
 function workflows_request() {
     var url = "/backend/workflows/get_workflows.php"
     var xhttp = new XMLHttpRequest();
@@ -11,7 +17,6 @@ function workflows_request() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             var response = eval("(" + xhttp.responseText + ")");
-            console.log(response);
             if (response[0] == false) {
                 console.log(response[0].error);
             }
@@ -29,13 +34,33 @@ function workflows_request() {
 }
 
 function get_workflows() {
-    data = [{}];
     workflows_request();
-    data.forEach(
-        element => {
-            create_workflow_on_httml(element);
+    data.forEach(element => {create_workflow_on_httml(element)})
+}
+
+function get_workflow() {
+    var workflow_id = window.localStorage.getItem("currentWorkflow");
+    var url = "/backend/workflows/get_workflow.php?workflow_id=" + workflow_id;
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("GET", url, false);
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            var response = eval("(" + xhttp.responseText + ")");
+            if (response[0] === false) {
+                console.log(response[0].error);
+            }
+            else {
+                build_workflow(response);
+                get_sticky_notes();
+            }
         }
-    )
+        else {
+            console.log({ "status": this.status, "state": this.readyState })
+        }
+    };
+    xhttp.send();
 }
 
 function create_workflow_on_httml(element) {
@@ -71,9 +96,7 @@ function create_workflow_on_httml(element) {
     workflow_clickable.innerHTML = element.name;
 
     delete_button.onclick = () => {
-        // alert("Deleting workflow " + element.name + " id:" + element.id);
         workflow_to_delete = document.getElementsByName("workflow" + element.id);
-        // console.log(element.id);
         delete_workflow(workflow_to_delete[0]); // always in 0 because the element returned is unique
     };
 
@@ -93,6 +116,7 @@ function create_workflow_on_httml(element) {
     workflow_clickable.onclick = () => {
         window.localStorage.setItem("currentWorkflow", element.id);
         get_workflow();
+        document.getElementById("tools").style.display = "block";
     }
 
     workflow.appendChild(workflow_clickable);
@@ -115,8 +139,7 @@ function edit_workflow_data(workflow_id, name, description) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            // var response = eval ("("+xhttp.responseText+")");
-            console.log(response);
+            var response = eval ("("+xhttp.responseText+")");
             if (response[0] == false) {
                 console.log(response[0].error);
             } else {
@@ -150,7 +173,6 @@ function post_workflow(name, description) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            console.log(xhttp.responseText);
             var response = eval("(" + xhttp.responseText + ")");
 
             if (response[0] == false) {
@@ -181,7 +203,7 @@ function delete_workflow(workflow) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            // var response = eval ("("+xhttp.responseText+")");
+            var response = eval ("("+xhttp.responseText+")");
             if (response[0] == false) {
                 console.log(response[0].error);
             } else {
@@ -193,13 +215,54 @@ function delete_workflow(workflow) {
     };
 }
 
+function build_workflow(states) {
+    var headers = document.getElementById("workflow_headers");
+    var columns = document.getElementById("workflow_states");
+    headers.innerHTML = "";
+    columns.innerHTML = "";
+    states.forEach((state) => {
+        headers.innerHTML += `<th id="${state.position}" name="state_${state.id}">${state.name}
+                                    <br>
+                                    <div>
+                                        <div class="workflow-btns">
+                                            <i class="fas fa-arrow-circle-left" onclick="move_left('${state.id}')"></i>
+                                        </div>
+                                        <div class="workflow-btns" onclick="delete_status('${state.id}')">
+                                            <i class="far fa-times-circle"></i>
+                                        </div>
+                                        <div class="workflow-btns" onclick="create_status('${state.id}')">
+                                            <i class="far fa-plus-square"></i>
+                                        </div>
+                                        <div class="workflow-btns" onclick="move_right('${state.id}')">
+                                            <i class="fas fa-arrow-circle-right"></i>
+                                        </div>
+                                    </div>
+                                </th>`
+        columns.innerHTML += `<td id="${state.position}" name = "statebody_${state.id}"></td>`
+    })
+
+    var current_workflow = data.find((workflow) => {
+        return parseInt(workflow.id, 10) === parseInt(window.localStorage.getItem("currentWorkflow"), 10);
+    })
+    var info_container = document.getElementsByClassName("workflow_info")[0];
+    info_container.innerHTML = `<div style="border-style: groove; padding:3px ">
+                                    <h2>${current_workflow.name}:</h2>
+                                    <p>${current_workflow.description}</p>
+                                    <p>${current_workflow.creation_date}</p>
+                                </div>`
+}
+
+// STATES FUNCTIONS
 function move_right(id) {
     var header = document.getElementsByName("state_" + id)[0];
     var column = document.getElementsByName("statebody_" + id)[0];
-    console.log(column);
 
     var headers = document.getElementById('workflow_headers');
     var body = document.getElementById('workflow_states');
+
+    var temp_id = column.id;
+    column.id = column.nextElementSibling.id;
+    column.nextElementSibling.id = temp_id;
 
     for (let i = 0; i < column.children.length; i++) {
         var left = parseInt(column.children[i].style.left.slice(0, -2));
@@ -210,6 +273,9 @@ function move_right(id) {
         var left = parseInt(column.nextElementSibling.children[i].style.left.slice(0, -2));
         column.nextElementSibling.children[i].style.left = (left - 120) + 'px';
     }
+
+    update_position(column);
+    update_position(column.nextElementSibling);
 
     headers.insertBefore(header, header.nextElementSibling.nextElementSibling);
     body.insertBefore(column, column.nextElementSibling.nextElementSibling);
@@ -225,6 +291,10 @@ function move_left(id) {
     headers.insertBefore(header, header.previousElementSibling);
     body.insertBefore(column, column.previousElementSibling);
 
+    var temp_id = column.id;
+    column.id = column.nextElementSibling.id;
+    column.nextElementSibling.id = temp_id;
+
     for (let i = 0; i < column.children.length; i++) {
         var left = parseInt(column.children[i].style.left.slice(0, -2));
         column.children[i].style.left = (left - 120) + 'px';
@@ -234,29 +304,25 @@ function move_left(id) {
         var left = parseInt(column.nextElementSibling.children[i].style.left.slice(0, -2));
         column.nextElementSibling.children[i].style.left = (left + 120) + 'px';
     }
+
+    update_position(column);
+    update_position(column.nextElementSibling);
 }
 
 function delete_status(id) {
-    var parent = document.getElementById("workflow_states");
-    var ch = [...parent.children];
-    var header2 = ch.find((child) => {
-        return parseInt(child.getAttribute("name").split("_")[1], 10) === parseInt(id, 10);
-    })
-    header2.remove();
-
-    var parent = document.getElementById("workflow_headers");
-    var ch = [...parent.children];
-    var header2 = ch.find((child) => {
-        return parseInt(child.id, 10) === parseInt(id, 10);
-    })
-    header2.remove();
+    var header = document.getElementsByName("state_"+id)[0];
+    var column = document.getElementsByName("statebody_"+id)[0];
+    header.remove();
+    column.remove();
 
     backend_delete_state(id);
 }
 
 function backend_delete_state(status_id){
-    console.log(status_id);
     var url = "/backend/stickynotes/delete_state.php";
+
+    var parameters = new FormData();
+    parameters.append("status_id", status_id);
 
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", url, false);
@@ -276,10 +342,7 @@ function backend_delete_state(status_id){
             window.location = "index.html";
         }
     };
-
-    var parameters = new FormData();
-    parameters.append("status_id", status_id);
-
+    
     xhttp.send(parameters);
 }
 
@@ -294,10 +357,10 @@ function create_status(id) {
 
     var new_header = header.cloneNode(true);
     new_header.textContent = new_state;
-    new_header.id = parseInt(id) + 1;
+    new_header.id = parseInt(column.id) + 1;
 
     var new_column = document.createElement("td");
-    new_column.id = parseInt(id) + 1;
+    new_column.id = parseInt(column.id) + 1;
 
     create_state_buttons(new_header);
 
@@ -329,106 +392,39 @@ function create_status(id) {
     var parameters = {
         'workflow_id': window.localStorage.getItem("currentWorkflow"),
         'name': new_state,
-        'position': parseInt(id) + 1
+        'position': parseInt(new_column.id)
     };
 
     var str_json = "json_string=" + (JSON.stringify(parameters));
     xhttp.send(str_json);
 }
 
-function update_positions(elmnt) {
-    // var url = "/backend/states/update_state_position.php"
-    // var xhttp = new XMLHttpRequest();
-    while (elmnt = elmnt.nextElementSibling) {
+function update_position(elmnt){
+    elmnt.id = parseInt(elmnt.id);
+    var name = elmnt.getAttribute("name");
+    db_id = name.split("_")[1];
 
-        // xhttp.open("POST", url, false);
-        // xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        var params = new FormData();
-
-        elmnt.id = parseInt(elmnt.id) + 1;
-        var name = elmnt.getAttribute("name");
-        db_id = name.split("_")[1];
-        params.append("id", db_id);
-        params.append("new_position", parseInt(elmnt.id));
-
-        // xhttp.send(params);
-    }
-}
-
-function create_state_buttons(elmnt) {
-    var bd_id = elmnt.getAttribute("name").split("_")[1];
-    elmnt.innerHTML += `<br><div><div id="left_btn_${elmnt.id}" onclick="move_left(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-left"></i></div><div id="delete_btn_${elmnt.id}" onclick="delete_status(${elmnt.id})" class="workflow-btns"><i class="far fa-times-circle"></i></div><div id="create_btn_${elmnt.id}" onclick="create_status(${elmnt.id})" class="workflow-btns"><i class="far fa-plus-square"></i></div><div id="right_btn_${elmnt.id}" onclick="move_right(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-right"></i></div></div>`;
-}
-
-function get_workflow() {
-    var workflow_id = window.localStorage.getItem("currentWorkflow");
-    var url = "/backend/workflows/get_workflow.php?workflow_id=" + workflow_id;
+    var url = `/backend/states/update_state_position.php?id=${db_id}&new_position=${elmnt.id}`
     var xhttp = new XMLHttpRequest();
-    var params = new FormData();
-    params.append("workflow_id", 19);
-
-    xhttp.open("GET", url, false);
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            //console.log(xhttp.responseText);
-            var response = eval("(" + xhttp.responseText + ")");
-            if (response[0] === false) {
-                console.log(response[0].error);
-            }
-            else {
-                // states = response;
-                build_workflow(response);
-                get_sticky_notes();
-            }
-        }
-        else {
-            console.log({ "status": this.status, "state": this.readyState })
-        }
-    };
+    xhttp.open("POST", url, false);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     xhttp.send();
 }
 
-function build_workflow(states) {
-    var headers = document.getElementById("workflow_headers");
-    var columns = document.getElementById("workflow_states");
-    headers.innerHTML = "";
-    columns.innerHTML = "";
-    states.forEach((state) => {
-        headers.innerHTML += `<th id="${state.position}" name="state_${state.id}">${state.name}
-                                    <br>
-                                    <div>
-                                        <div class="workflow-btns">
-                                            <i class="fas fa-arrow-circle-left" onclick="move_left('${state.id}')"></i>
-                                        </div>
-                                        <div class="workflow-btns" onclick="delete_status('${state.id}')">
-                                            <i class="far fa-times-circle"></i>
-                                        </div>
-                                        <div class="workflow-btns" onclick="create_status('${state.id}')">
-                                            <i class="far fa-plus-square"></i>
-                                        </div>
-                                        <div class="workflow-btns" onclick="move_right('${state.id}')">
-                                            <i class="fas fa-arrow-circle-right"></i>
-                                        </div>
-                                    </div>
-                                </th>`
-
-        columns.innerHTML += `<td id="${state.position}" name = "statebody_${state.id}"></td>`
-    })
-
-    var current_workflow = data.find((workflow) => {
-        return parseInt(workflow.id, 10) === parseInt(window.localStorage.getItem("currentWorkflow"), 10);
-    })
-    var info_container = document.getElementsByClassName("workflow_info")[0];
-    info_container.innerHTML = `<div style="border-style: groove; padding:3px ">
-                                    <h2>${current_workflow.name}:</h2>
-                                    <p>${current_workflow.description}</p>
-                                    <p>${current_workflow.creation_date}</p>
-                                </div>`
+function update_positions(elmnt) {
+    while (elmnt = elmnt.nextElementSibling) {
+        elmnt.id = parseInt(elmnt.id) + 1;
+        update_position(elmnt);
+    }
 }
 
+function create_state_buttons(elmnt) {
+    elmnt.innerHTML += `<br><div><div id="left_btn_${elmnt.id}" onclick="move_left(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-left"></i></div><div id="delete_btn_${elmnt.id}" onclick="delete_status(${elmnt.id})" class="workflow-btns"><i class="far fa-times-circle"></i></div><div id="create_btn_${elmnt.id}" onclick="create_status(${elmnt.id})" class="workflow-btns"><i class="far fa-plus-square"></i></div><div id="right_btn_${elmnt.id}" onclick="move_right(${elmnt.id})" class="workflow-btns"><i class="fas fa-arrow-circle-right"></i></div></div>`;
+}
+
+
+// STICKY NOTE FUNCTIONS
 function get_sticky_notes() {
     var url = `/backend/stickynotes/get_stickynotes.php?workflow_id=${window.localStorage.getItem("currentWorkflow")}`;
     var xhttp = new XMLHttpRequest();
@@ -463,6 +459,7 @@ function add_notes_html(notes) {
 }
 
 function set_note_functions(note) {
+    console.log(note.style.background)
     var toolsContainer = note.children[1];
     var noteTextarea = note.children[0];
     var changeColorInput = toolsContainer.children[0];
@@ -473,7 +470,7 @@ function set_note_functions(note) {
     note.style.position = "fixed";
 
     noteTextarea.addEventListener("change", () => { update_note(note); });
-
+    changeColorInput.value = '#fff';
     changeColorInput.addEventListener("change", (e) => {
         note.style.background = e.target.value;
         noteTextarea.style.background = e.target.value;
@@ -488,10 +485,8 @@ function set_note_functions(note) {
     };
 }
 
-//Make the DIV element draggagle:
 function createNote() {
 
-    alert("bb");
     // Get the value from the color input
     var color = document.getElementById("sticky_note_color").value;
 
@@ -637,6 +632,7 @@ function insert_note(elmnt) {
     var str_json = "json_string=" + (JSON.stringify(parameters));
     xhttp.send(str_json);
 }
+
 function update_note(elmnt) {
     var url = "/backend/stickynotes/update_stickynote.php"
     var xhttp = new XMLHttpRequest();
