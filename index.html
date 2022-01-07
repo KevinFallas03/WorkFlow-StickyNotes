@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inclusive Whiteboard</title>
     <script src="scripts/workflows.js"></script>
-    <!-- <script type="module" src="scripts/stickynotes.js"></script> -->
     <script src="scripts/speechRecognition.js"></script>
     <script src="scripts/controlFunctions.js"></script>
     <script src="scripts/tts.js"></script>
+    <!-- <script type="module" src="scripts/stickynotes.js"></script> -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <!-- <link rel="stylesheet" href="css/main.css">
@@ -43,7 +43,7 @@
                     <button id="startSpeechRecognition" onclick="startSpeechRecognition()">Start Speech Recognition</button>
                 </div>
             </div>
-            <div>
+            <div id="workflow-list">
                 <h2>Workflows</h2>
                 <div id="workflow-list-id" class="workflow-list">
                     
@@ -60,9 +60,7 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div> 
     </div>
-    
-
 </body>
 </html>

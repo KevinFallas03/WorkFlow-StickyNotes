@@ -6,7 +6,7 @@ window.onload = () => {
         get_workflow();
         document.getElementById("tools").style.display = "block";
         let miniPointer = window.localStorage.getItem("miniPointer");
-        if(miniHelperTTS !== null){
+        if(miniPointer !== null){
             miniPointer = JSON.parse(miniPointer);
             initTTS();
             HelperTTS.paused = true;
@@ -124,7 +124,7 @@ function create_workflow_on_httml(element) {
     workflow_clickable.onclick = () => {
         window.localStorage.setItem("currentWorkflow", element.id);
         const {row, col} = HelperTTS.pointer;
-        window.localStorage.setItem("currentWorkflow", {row, col});
+        window.localStorage.setItem("miniPointer", {row, col});
         get_workflow();
         document.getElementById("tools").style.display = "block";
     }
