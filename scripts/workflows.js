@@ -11,7 +11,7 @@ window.onload = () => {
 }
 // WORKFLOW FUNCTIONS
 function workflows_request() {
-    var url = "/backend/workflows/get_workflows.php"
+    var url = "/backend/workflows/get_workflows.php";
     var xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
