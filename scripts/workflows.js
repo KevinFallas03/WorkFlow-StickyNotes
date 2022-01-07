@@ -310,12 +310,17 @@ function move_left(id) {
 }
 
 function delete_status(id) {
+    backend_delete_state(id);
+    
     var header = document.getElementsByName("state_"+id)[0];
     var column = document.getElementsByName("statebody_"+id)[0];
+
+    update_positions(header);
+    update_positions(column);
+
     header.remove();
     column.remove();
 
-    backend_delete_state(id);
 }
 
 function backend_delete_state(state_id){
@@ -334,12 +339,11 @@ function backend_delete_state(state_id){
             if (response[0] == false){
                 console.log(response[0].error);
             } else {
-                window.location = "index.html";
+                console.log(response[0]);
             }
         }
         else {
-            console.log({ "status": this.status, "state": this.readyState })
-            window.location = "index.html";
+            console.log({ "status": this.status, "state": this.readyState });
         }
     };
 
