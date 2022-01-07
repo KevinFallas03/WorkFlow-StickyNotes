@@ -10,7 +10,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/pause
 
 */
 // Constants
-const STATE_LABEL = "Estado";
+const STATE_LABEL = "State";
 
 // Global Object
 const HelperTTS = {
@@ -73,7 +73,8 @@ const initTTS = () => {
 // Returns a Promise that resolves when audio ends
 const speak = (text) => {
     const speechRequest = new SpeechSynthesisUtterance();
-    speechRequest.lang = "es-US";
+    // Remove comment for spanish
+    //speechRequest.lang = "es-US";
     speechRequest.text = text;
     window.speechSynthesis.speak(speechRequest);
     return new Promise(resolve => speechRequest.onend = resolve);

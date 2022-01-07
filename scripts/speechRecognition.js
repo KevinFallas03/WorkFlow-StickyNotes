@@ -13,14 +13,17 @@ const startSpeechRecognition = () => {
     if (isCompatible) {
         const recognition = new webkitSpeechRecognition();
 
-        recognition.lang = "es-US"
+        // Remove comment for spanish
+        //recognition.lang = "es-US"
 
         recognition.onstart = () => alert("Speech Recognition Listening...");
 
         recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
-            if (transcript === "lee la pizarra") {
-                alert("Leyendo Pizarra...")
+            if (transcript === "read board" || transcript === "lee la pizarra") {
+                if (!HelperTTS.paused) {
+                    startTTS();
+                }
             }
             console.log("Speech: ",transcript);
         };
