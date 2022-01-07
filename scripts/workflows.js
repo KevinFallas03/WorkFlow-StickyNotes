@@ -240,7 +240,7 @@ function delete_status(id) {
     var parent = document.getElementById("workflow_states");
     var ch = [...parent.children];
     var header2 = ch.find((child) => {
-        return parseInt(child.id, 10) === parseInt(id, 10);
+        return parseInt(child.getAttribute("name").split("_")[1], 10) === parseInt(id, 10);
     })
     header2.remove();
 
@@ -250,6 +250,37 @@ function delete_status(id) {
         return parseInt(child.id, 10) === parseInt(id, 10);
     })
     header2.remove();
+
+    backend_delete_state(id);
+}
+
+function backend_delete_state(status_id){
+    console.log(status_id);
+    var url = "/backend/stickynotes/delete_state.php";
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", url, false);
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            console.log(xhttp.responseText);
+            response = eval(`(${xhttp.responseText})`)
+            if (response[0] == false){
+                console.log(response[0].error);
+            } else {
+                window.location = "index.html";
+            }
+        }
+        else {
+            console.log({ "status": this.status, "state": this.readyState })
+            window.location = "index.html";
+        }
+    };
+
+    var parameters = new FormData();
+    parameters.append("status_id", status_id);
+
+    xhttp.send(parameters);
 }
 
 function create_status(id) {
