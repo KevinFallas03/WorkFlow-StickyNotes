@@ -314,6 +314,36 @@ function delete_status(id) {
     var column = document.getElementsByName("statebody_"+id)[0];
     header.remove();
     column.remove();
+
+    backend_delete_state(id);
+}
+
+function backend_delete_state(state_id){
+    var url = "/backend/states/delete_state.php";
+
+    var parameters = new FormData();
+    parameters.append("state_id", state_id);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", url, false);
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            console.log(xhttp.responseText);
+            response = eval(`(${xhttp.responseText})`)
+            if (response[0] == false){
+                console.log(response[0].error);
+            } else {
+                window.location = "index.html";
+            }
+        }
+        else {
+            console.log({ "status": this.status, "state": this.readyState })
+            window.location = "index.html";
+        }
+    };
+
+    xhttp.send(parameters);
 }
 
 function create_status(id) {
