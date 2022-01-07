@@ -40,7 +40,7 @@ const startTTS = () => {
         initTTS();  
     }
     HelperTTS.pointer.row = 0;
-    HelperTTS.pointer.col = 0; 
+    HelperTTS.pointer.col = -1; 
     if (moveRight(HelperTTS)) { // workflow not empty
         HelperTTS.paused = true;
         HelperTTS.blockKeys = false;

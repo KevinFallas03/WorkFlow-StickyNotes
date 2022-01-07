@@ -14,13 +14,13 @@ const startSpeechRecognition = () => {
         const recognition = new webkitSpeechRecognition();
 
         // Remove comment for spanish
-        //recognition.lang = "es-US"
+        recognition.lang = "en-US"
 
         recognition.onstart = () => alert("Speech Recognition Listening...");
 
         recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
-            if (transcript === "read board" || transcript === "lee la pizarra") {
+            if (transcript === "start" || transcript === "lee la pizarra") {
                 if (!HelperTTS.paused) {
                     startTTS();
                 }

@@ -11,7 +11,7 @@ window.onload = () => {
             initTTS();
             HelperTTS.paused = true;
             HelperTTS.pointer.col = miniPointer.col;
-            HelperTTS.pointer.row = miniPointer.rowl; 
+            HelperTTS.pointer.row = miniPointer.row; 
         }
     }else{
         document.getElementById("tools").style.display = "none";
@@ -124,7 +124,7 @@ function create_workflow_on_httml(element) {
     workflow_clickable.onclick = () => {
         window.localStorage.setItem("currentWorkflow", element.id);
         const {row, col} = HelperTTS.pointer;
-        window.localStorage.setItem("miniPointer", {row, col});
+        window.localStorage.setItem("miniPointer", JSON.stringify({row, col}));
         get_workflow();
         document.getElementById("tools").style.display = "block";
     }
