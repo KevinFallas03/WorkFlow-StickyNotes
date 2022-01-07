@@ -51,10 +51,91 @@
         <div class="board">
             <table id="workflow">
                 <tr id="workflow_headers">
+                    <th id="sticky_note_option">Sticky notes
+                    </th>
+                    <th id="1" class="state_1">On hold
+                        <br>
+                        <div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-left" onclick="move_left('1')"></i>
+                            </div>
+                            <div class="workflow-btns" onclick="delete_status('1')">
+                                <i class="far fa-times-circle"></i>
+                            </div>
+                            <div class="workflow-btns" onclick="create_status('1')">
+                                <i class="far fa-plus-square"></i>
+                            </div>
+                            <div class="workflow-btns" onclick="move_right('1')">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </div>
+                        </div>
+                    </th>
+                    <th id="2" class="state_2">In progress
+                        <br>
+                        <div>
+                            <div class="workflow-btns">
+                                <i class="far fa-plus-square"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="far fa-times-circle"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-left"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </div>
+                        </div>
+                    </th>
+                    <th id="3" class="state_3">Need revision
+                        <br>
+                        <div>
+                            <div class="workflow-btns">
+                                <i class="far fa-plus-square"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="far fa-times-circle"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-left"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </div>
+                        </div>
+                    </th>
+                    <th id="4" class="state_4">Approved
+                        <br>
+                        <div>
+                            <div class="workflow-btns">
+                                <i class="far fa-plus-square"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="far fa-times-circle"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-left"></i>
+                            </div>
+                            <div class="workflow-btns">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </div>
+                        </div>
+                    </th>
                 </tr>
                 <tbody>
                     <tr id="workflow_states">
+                        <td id="stickynotes_config" class="drop" style="text-align: center;">
+                            <input type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5">
+                            <button onclick="createNote('#ace9dd')">Nueva nota</button>
+                        </td>
+        
+                        <td id="1" class="state_body_1"></td>
+        
+                        <td id="2" class="state_body_2"></td>
+        
+                        <td id="3" class="state_body_3"></td>
 
+                        <td id="4" class="state_body_4"></td>
                     </tr>
                 </tbody>
             </table>
