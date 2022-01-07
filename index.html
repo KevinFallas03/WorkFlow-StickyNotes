@@ -7,6 +7,9 @@
     <title>Inclusive Whiteboard</title>
     <script src="scripts/workflows.js"></script>
     <!-- <script type="module" src="scripts/stickynotes.js"></script> -->
+    <script src="scripts/speechRecognition.js"></script>
+    <script src="scripts/controlFunctions.js"></script>
+    <script src="scripts/tts.js"></script>
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <!-- <link rel="stylesheet" href="css/main.css">
@@ -37,6 +40,7 @@
                 <div id="stickynotes_config" class="drop" style="text-align: center;">
                     <input style="width: 70px; height: 70px;" type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5"><br>
                     <button id="create_note" onclick="createNote('#ace9dd')">New sticky note</button>
+                    <button id="startSpeechRecognition" onclick="startSpeechRecognition()">Start Speech Recognition</button>
                 </div>
             </div>
             <div>
@@ -57,7 +61,6 @@
                 </tbody>
             </table>
         </div>
-        
     </div>
     
 
