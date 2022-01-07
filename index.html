@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inclusive Whiteboard</title>
     <script src="scripts/workflows.js"></script>
-    <script src="scripts/stickynotes.js"></script>
+    <!-- <script type="module" src="scripts/stickynotes.js"></script> -->
     <script src="scripts/speechRecognition.js"></script>
     <script src="scripts/controlFunctions.js"></script>
     <script src="scripts/tts.js"></script>
@@ -31,8 +31,17 @@
             <i class="fa fa-bars"></i>
         </a>
     </div>
+    <br>
     <div id="content">
-        <div class="workflows" >
+        <div class="workflows">
+            <div class="workflow_info"></div>
+            <div id="tools">
+                <h2>Tools</h2>
+                <div id="stickynotes_config" class="drop" style="text-align: center;">
+                    <input style="width: 70px; height: 70px;" type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5"><br>
+                    <button id="create_note" onclick="createNote('#ace9dd')">New sticky note</button>
+                </div>
+            </div>
             <h2>Workflows</h2>
             <div id="workflow-list-id" class="workflow-list" >
                 
@@ -41,106 +50,14 @@
         <div class="board">
             <table id="workflow">
                 <tr id="workflow_headers">
-                    <th id="sticky_note_option">Sticky notes
-                    </th>
-                    <th id="1" class="state_1">On hold
-                        <br>
-                        <div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-left" onclick="move_left('1')"></i>
-                            </div>
-                            <div class="workflow-btns" onclick="delete_status('1')">
-                                <i class="far fa-times-circle"></i>
-                            </div>
-                            <div class="workflow-btns" onclick="create_status('1')">
-                                <i class="far fa-plus-square"></i>
-                            </div>
-                            <div class="workflow-btns" onclick="move_right('1')">
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </div>
-                        </div>
-                    </th>
-                    <th id="2" class="state_2">In progress
-                        <br>
-                        <div>
-                            <div class="workflow-btns">
-                                <i class="far fa-plus-square"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="far fa-times-circle"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-left"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </div>
-                        </div>
-                    </th>
-                    <th id="3" class="state_3">Need revision
-                        <br>
-                        <div>
-                            <div class="workflow-btns">
-                                <i class="far fa-plus-square"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="far fa-times-circle"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-left"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </div>
-                        </div>
-                    </th>
-                    <th id="4" class="state_4">Approved
-                        <br>
-                        <div>
-                            <div class="workflow-btns">
-                                <i class="far fa-plus-square"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="far fa-times-circle"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-left"></i>
-                            </div>
-                            <div class="workflow-btns">
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </div>
-                        </div>
-                    </th>
                 </tr>
                 <tbody>
                     <tr id="workflow_states">
-                        <td id="stickynotes_config" class="drop" style="text-align: center;">
-                            <input type="color" id="sticky_note_color" name="sticky_note_color" value="#fbeba5">
-                            <button onclick="createNote('#ace9dd')">Nueva nota</button>
-                        </td>
-        
-                        <td id="1" class="state_body_1">
-                            
-                        </td>
-        
-                        <td id="2" class="state_body_2">
-                        </td>
-        
-                        <td id="3" class="state_body_3">
-                        </td>
-        
-                        <td id="4" class="state_body_4">
-                        </td>
+
                     </tr>
                 </tbody>
             </table>
         </div>
-        <button onclick="startSpeechRecognition()">
-            Start Speech Recognition
-        </button>
-        <button onclick="startTTS()">
-            Start TTS
-        </button>
     </div>
     
 

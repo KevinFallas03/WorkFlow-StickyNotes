@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+//require "control_sesion.php"; //importa el control de sesiones el require detecta errores Fatales en la ejecución del archivo importado no así el include!
 include "../mysqli_connection.php";
 
 /*********Eliminar estando producción************/
@@ -8,32 +9,22 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 ini_set("display_errors", 1);
 /*************************************************/
 
-if (!isset($_SESSION["user_id"]))
+if (!isset($_REQUEST["id"]) && !isset($_REQUEST["new_position"]))
 {
-    echo ("{'error':'login needed'}");
-    exit();
-}
-$user_id = $_SESSION["user_id"];
 
-if (!isset($_POST['json_string']))
-{
-    echo ("{'error':'json_string body is needed'}");
+    echo ("{'error':'parameter id or new_position needed'}");
     exit();
 }
-$body = $_POST['json_string'];
-$data = json_decode($body);
+
+$id = $_REQUEST["id"];
+$new_position = $_REQUEST["new_position"];
 
 $conn = get_connection();
+$query = "UPDATE `inclusive_whiteboard`.`states` SET `position` = $new_position WHERE id=$id";
 
 $result = run_query(
     $conn, 
-    "   
-    UPDATE `inclusive_whiteboard`.`sticky_notes`
-    SET `status_id` = $data->status_id,
-        `html_code` = '$data->html_code',
-        `description` = '$data->description'
-    WHERE id = $data->note_id;
-    "
+    $query
 );
 
 if($result){

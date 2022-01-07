@@ -30,7 +30,7 @@ $result = run_query(
 if ($row = mysqli_fetch_row ($result)) {
     $_SESSION["user_id"] = $row[0];
     $_SESSION["username"] = $row[1];
-    echo "[true, {'true': 'user_id':'$row[0]', 'username':'$row[1]'}]";
+    echo "[true, {'user_id':'$row[0]', 'username':'$row[1]'}]";
     header("Location: ../../index.html");
 } else {
     echo "[false, {'error': 'user not found or user without any workflow'}]";

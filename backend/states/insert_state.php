@@ -30,7 +30,7 @@ $result = run_query(
     "   
     INSERT INTO `inclusive_whiteboard`.`states`
     (`user_id`, `workflow_id`, `name`, `position`)
-    VALUES (2, $data->workflow_id,'$data->name', $data->position);
+    VALUES ($user_id, $data->workflow_id,'$data->name', $data->position);
     "
 );
 

@@ -22,7 +22,7 @@
 //         }
 //     };
 
-//     xhttp.open("GET", "login.php", false);
+//     xhttp.open("POST", "register.php", false);
 
 //     var formData = new FormData();
 
