@@ -458,7 +458,7 @@ function add_notes_html(notes) {
         var state = document.getElementsByName(`statebody_${note.status_id}`)[0];
         var new_div = document.createElement('div');
         new_div.innerHTML = note.html_code;
-        state.appendChild(new_div); 
+        state.appendChild(new_div.children[0]); 
         var note_added = document.getElementById(`sticky_note_${note.id}`);
         set_note_functions(note_added, note.description);
     });
@@ -474,14 +474,17 @@ function set_note_functions(note,description) {
     note.ondblclick = function () { toolsContainer.style.display = 'block'; };
     note.style.position = "fixed";
 
-    noteTextarea.addEventListener("change", () => { update_note(note); });
     noteTextarea.textContent = description;
-    changeColorInput.value = '#fff';
+    noteTextarea.addEventListener("change", () => { update_note(note); });
+
     changeColorInput.addEventListener("change", (e) => {
         note.style.background = e.target.value;
         noteTextarea.style.background = e.target.value;
         toolsContainer.style.display = 'none';
+        update_note(note);
     }, false);
+    var rgb = RGBToHex(note.style.background);
+    changeColorInput.value = rgb;
 
     moveBtn.onmouseover = function () { dragElement(note, toolsContainer) };
 
@@ -613,7 +616,6 @@ function insert_note(elmnt) {
     var xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
-        console.log(xhttp.responseText);
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             if (xhttp.responseText < 0) { // If is negative, there was an error
                 alert("Error: Sticky note not saved");
@@ -691,4 +693,22 @@ function delete_note(elmnt) {
     parameters.append("note_id", elmnt.id.split("_")[2]);
 
     xhttp.send(parameters);
+}
+
+function RGBToHex(rgb) {
+    let sep = rgb.indexOf(",") > -1 ? "," : " ";
+    rgb = rgb.substr(4).split(")")[0].split(sep);
+
+    let r = (+rgb[0]).toString(16),
+        g = (+rgb[1]).toString(16),
+        b = (+rgb[2]).toString(16);
+
+    if (r.length == 1)
+        r = "0" + r;
+    if (g.length == 1)
+        g = "0" + g;
+    if (b.length == 1)
+        b = "0" + b;
+
+    return "#" + r + g + b;
 }
