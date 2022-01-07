@@ -318,11 +318,11 @@ function delete_status(id) {
     backend_delete_state(id);
 }
 
-function backend_delete_state(status_id){
-    var url = "/backend/stickynotes/delete_state.php";
+function backend_delete_state(state_id){
+    var url = "/backend/states/delete_state.php";
 
     var parameters = new FormData();
-    parameters.append("status_id", status_id);
+    parameters.append("state_id", state_id);
 
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", url, false);
@@ -342,7 +342,7 @@ function backend_delete_state(status_id){
             window.location = "index.html";
         }
     };
-    
+
     xhttp.send(parameters);
 }
 
