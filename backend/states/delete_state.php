@@ -22,13 +22,21 @@ if (!isset($_REQUEST['state_id']))
 }
 $state_id = $_REQUEST['state_id'];
 
-$query_delete = "DELETE FROM states WHERE id = $state_id;";
+$delete_stickynotes_query = "DELETE FROM sticky_notes WHERE status_id = $state_id";
+$delete_state_query = "DELETE FROM states WHERE id = $state_id;";
 
 $conn = get_connection();
+
 $result = run_query(
     $conn, 
-    $query_delete
+    $delete_stickynotes_query
 );
+
+$result = run_query(
+    $conn, 
+    $delete_state_query
+);
+
 $rows_affected = $conn->affected_rows;
 
 if($rows_affected > 0){
