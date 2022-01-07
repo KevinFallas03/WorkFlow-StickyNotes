@@ -9,7 +9,6 @@ https://stackoverflow.com/questions/58049491/how-to-wait-until-speech-is-finishe
 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/pause
 
 */
-
 // Constants
 const STATE_LABEL = "Estado";
 
@@ -53,6 +52,7 @@ const initTTS = () => {
     if ('speechSynthesis' in window) {
         HelperTTS.headers = window.document.getElementById("workflow_headers").children;
         HelperTTS.columns = window.document.getElementById("workflow_states").children;
+        HelperTTS.initialized = true;
 
         document.addEventListener('keydown', (event) => {
             if (!HelperTTS.blockKeys) {
